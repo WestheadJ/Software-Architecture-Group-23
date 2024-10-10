@@ -51,6 +51,44 @@ adpated to [SvelteKit](https://kit.svelte.dev).
 
 #### Cons
 - Verbose HTML; Clutter can be created by numerous utility classes, making the HTML harder to maintain.
-- 
+- Learning curve; it's a diffrent framework and style of creating a UI, and customising the configuration file
+- No pre-built components; You have to build everything from scratch as there are no pre-built components
+- Potentially repetitive; styles can repeat across if not careful
 
-### - [Bootsrap CSS](https://getbootstrap.com)
+### [Bootsrap CSS](https://getbootstrap.com)
+
+#### Pros
+- Quick Setup; Easy to get started with, with it's pre-built components and responsive grid system.
+- Responsive Design; Mobile-first framework with a 12-column grid system making it simple to create a responsive website.
+- Pre-Built Components; Easy to use components, saving on time on common UI elements.
+- Cross Browser Compatibility; Handles many cross-browser issues ensuring consistency across different browserss.
+- Extensive Documentation; Easy for beginners and experienced developers to use.
+- Large Community; Bootstrap has many community, tutorials, plugins and troubleshoots.
+- Customisable; Can customisable bootstrap variables, components and styles.
+
+#### Cons
+- Bloat; Comes with an intensive library of mnay built-in styles and components, which can lead to larger files sizes if not optimised.
+- Design Similarity; Many websites are using default bootstrap so will look extremely similar.
+- Overriding Styles; Sometimes to customise bootstrap it leads to an excessive use of ```important``` or writing a lot of custom CSS.
+- Learning Curve; If you want to customise anymore, there is the need to learn how to customise it deeper.
+- Dependent on JQuery; this isn't ideal as the application will be dependent on it.
+- Not utility first; rather than using customisable utility classes, it is just pre-defined components.
+
+### [Materiaize](https://materializecss.com)
+
+#### Pros
+- Material Design; offers a clean, modern style.
+- Pre-Built Components; Comes with a vartiety of ready to use components.
+- Responsive Grid System; Like bootstrap it has a built-in responsive design with a 12-column grid system like bootstrap.
+- Mobile-First Design; Optimised for mobile devices.
+- JavaScripts Components; Includes interactive Javascript components.
+- Consistent UI; Ensures a uniform and consistent style across devices and pages.
+- Extensive Documentation; Well-documented easy for all developers to use.
+
+#### Cons 
+- Lack of Flexibility; Not much customisation as it follows Google's Material Design principles.
+- Bloat; Includes a library of custom components, increasing load times and file sizes.
+- Customisation; Challenging customising components.
+- Learning Curve; We haven't used it before, so it would take longer to learn.
+- JavaScript Dependency; Some components rely hevaily on Materialise's JavaScript.
+- Smaller Community; It doesn't have a community like bootstrap but it has a little one. 
