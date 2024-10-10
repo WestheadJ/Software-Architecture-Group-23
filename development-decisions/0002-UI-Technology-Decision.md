@@ -14,12 +14,6 @@ however there are frameworks to make it quicker and easier to read and not need 
 - [Bootsrap CSS](https://getbootstrap.com)
 - [Materiaize](https://materializecss.com)
 
-## Descision Outcome
-[Tailwind CSS](https://tailwindcss.com) was the final decision based on it's high customisation, no pre-built components
-creating less shared data between the server and client. Responsive mobile first design with it's utilities being responsive
-as well creating well optimised and responsive designs. It's also extremely easy to use with it's shorthand and is well
-adpated to [SvelteKit](https://kit.svelte.dev).
-
 ## Pros and Cons of Options
 
 ### Vanilla Css
@@ -45,9 +39,8 @@ adpated to [SvelteKit](https://kit.svelte.dev).
 #### Pros
 - Utility-First Approach; Allows for inline HTML styling
 - Customisation; All utilities are customiseable, no specific design or look to it.
-- Small File Size; Removes unused CSS in production buildsm reducing final file size.
+- Small File Size; Removes unused CSS in production builds reducing final file size.
 - Responsive Design; Built in mobile-first responsive design, creating complex responsive layouts quickly.
-- Fits well with [SvelteKit](https://kit.svelte.dev)
 
 #### Cons
 - Verbose HTML; Clutter can be created by numerous utility classes, making the HTML harder to maintain.
@@ -91,4 +84,19 @@ adpated to [SvelteKit](https://kit.svelte.dev).
 - Customisation; Challenging customising components.
 - Learning Curve; We haven't used it before, so it would take longer to learn.
 - JavaScript Dependency; Some components rely hevaily on Materialise's JavaScript.
-- Smaller Community; It doesn't have a community like bootstrap but it has a little one. 
+- Smaller Community; It doesn't have a community like bootstrap but it has a little one.
+
+## Descision Outcome
+[Tailwind CSS](https://tailwindcss.com) was the final decision based on it's high customisation, no pre-built components
+creating less shared data between the server and client. Responsive mobile first design with it's utilities being responsive
+as well creating well optimised and responsive designs. It's also extremely easy to use with it's shorthand and is well
+adpated to [SvelteKit](https://kit.svelte.dev).
+
+## Consequences
+- 2 others in the group will have to learn, 2 others will have to refresh on it.
+- Can lead to repeated use of classes unless we put it in custom utility classes.
+- Can spead up development.
+- Responsive design.
+- Smaller file sizes, with potential increase in file size.
+- More cusomisation to the page.
+
