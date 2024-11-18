@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    command: start --log debug --user $SURREALDB_USER --pass $SURREALDB_PASS
+ports:
+  - "${SURREALDB_PORT}:8000"
+    volumes:
+      - surrealdb-data:/data
+volumes:
+  surrealdb-data:
