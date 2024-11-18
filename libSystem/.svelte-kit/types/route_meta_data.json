@@ -2,5 +2,8 @@
 	"/": [],
 	"/login": [
 		"src/routes/login/+page.server.ts"
+	],
+	"/register": [
+		"src/routes/register/+page.server.ts"
 	]
 }
