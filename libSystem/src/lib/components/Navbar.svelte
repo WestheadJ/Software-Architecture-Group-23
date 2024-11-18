@@ -47,7 +47,7 @@
     <div class="form-control w-full max-w-sm">
       <input
         type="text"
-        placeholder="Search"
+        placeholder="Search media"
         class="input input-bordered rounded-full px-4"
         aria-label="Search"
       />
