@@ -12,38 +12,48 @@
   }
 </script>
 
-<div class="w-screen h-screen flex flex-col">
-  <form method="POST" class="m-auto" use:enhance>
+<div class="w-screen h-screen flex">
+  <form method="POST" use:enhance>
+    <h1 class="text-2xl text-center text-white font-semibold mb-2">Sign Up</h1>
     <label for="email">Email:</label>
-    <input type="email" name="email" placeholder="email" />
+    <input
+      name="email"
+      type="email"
+      placeholder="Email"
+      class="input input-bordered w-full max-w-xs"
+    />
     <label for="password">Password:</label>
-    <input type="password" name="password" placeholder="Password Example" />
-    <label for="passwordConfirm">Confirm Password:</label>
     <input
       type="password"
-      name="passwordConfirm"
-      placeholder="Confirm Password"
+      name="password"
+      placeholder="Password"
+      class="input input-bordered w-full max-w-xs"
     />
-    <button
-      class="w-full rounded bg-yellow-500 h-10 mt-2 text-black hover:bg-yellow-300 hover:scale-105"
-      >Register</button
-    >
+    <label for="passwordConfirm">Confirm Password:</label>
+    <input
+      name="passwordConfirm"
+      type="password"
+      placeholder="Confirm Password"
+      class="input input-bordered w-full max-w-xs"
+    />
+    <button class="btn btn-primary mt-auto" type="submit">Register</button>
+    {#if $page.form?.success}<h1 class="text-green-400 mt-2">Success!</h1>{/if}
+    {#if $page.form?.status === 400}<h1 class="text-red-400">
+        Registration Failed
+      </h1>{/if}
   </form>
-  {#if $page.form?.success}<h1
-      class="m-2 bg-green-200 rounded p-2 text-black text-center"
-    >
-      Success
-    </h1>{/if}
-  {#if $page.form?.error}<h1>Failure</h1>{/if}
 </div>
 
 <style>
   form {
-    @apply w-[20rem] h-fit rounded p-5 bg-white;
-    @apply flex flex-col;
+    @apply w-[20rem] h-fit bg-zinc-900 rounded-lg p-2 flex flex-col gap-2 m-auto p-4;
   }
 
   input {
-    @apply rounded;
+    @apply input input-bordered rounded w-full max-w-xs;
+  }
+
+  button {
+    @apply btn btn-primary mt-auto;
   }
 </style>
