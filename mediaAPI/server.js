@@ -17,7 +17,39 @@ app.get('/', async (req, res) => {
     res.send("hello world!");
 });
 
+app.get('/auth/token', async (req, res) => {
+    res.send("need an auth token?")
+})
 
+app.get('/media/get/all', async (req, res) => {
+    res.send("no items in the library")
+})
+
+app.get('/media/get/item', async (req, res) => {
+    res.send("there's no such thing")
+})
+
+app.get('/media/reservation', async (req, res) => {
+    res.send("There are no current reservations")
+})
+
+app.get('/media/booked', async (req, res) => {
+    res.send("There is no media booked")
+})
+
+app.put('/media/reserve', async (req, res) => {
+    res.send("Reserved!")
+})
+
+app.put('/media/book', async (req, res) => {
+    res.send("Booked")
+})
+
+app.post('/media/create', async (req, res) => { res.send("Are you staff?") })
+
+app.delete('/media/delete', async (req, res) => {
+    res.send("Removed media")
+})
 
 
 app.listen(PORT, () => {
