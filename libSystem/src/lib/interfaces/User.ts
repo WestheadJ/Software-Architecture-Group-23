@@ -3,3 +3,10 @@ export interface User {
   password: string;
   passwordConfirm: string;
 }
+
+export interface Media {
+  title: string;
+  author: string;
+  synopsis: string;
+  status: string;
+}
