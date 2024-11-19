@@ -18,8 +18,10 @@ export const actions = {
     console.log(formData);
 
     try {
+      await locals.pb.collection('users').requestVerification(formData.email);
       await locals.pb.collection('users').create(formData);
       await locals.pb.collection('users').authWithPassword(authData.email, authData.password);
+
       console.log(locals.pb.authStore.isValid);
       return { success: true, message: 'User created and authenticated successfully.' };
 
