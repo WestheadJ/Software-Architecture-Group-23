@@ -38,15 +38,13 @@
     />
     <button class="btn btn-primary mt-auto" type="submit">Register</button>
     {#if $page.form?.success}<h1 class="text-green-400 mt-2">Success!</h1>{/if}
-    {#if $page.form?.status === 400}<h1 class="text-red-400">
-        Registration Failed
-      </h1>{/if}
+    {#if $page.form?.error}<h1 class="text-red-400 mt-2">Failure</h1>{/if}
   </form>
 </div>
 
 <style>
   form {
-    @apply w-[20rem] h-fit bg-zinc-900 rounded-lg p-2 flex flex-col gap-2 m-auto p-4;
+    @apply w-[20rem] h-[24rem] bg-zinc-900 rounded-lg p-2 flex flex-col gap-2 m-auto p-4;
   }
 
   input {
