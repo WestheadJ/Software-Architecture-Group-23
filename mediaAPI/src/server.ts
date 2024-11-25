@@ -54,13 +54,23 @@ app.post('/auth/token/verify', async (req: Request, res: Response) => {
 })
 
 
-app.get('/auth/token/refresh', async (_req: Request, res: Response) => { });
+app.post('/auth/token/refresh', async (req: Request, res: Response) => { });
 
-app.get('/media/get/all', async (_req: Request, res: Response) => {
-    res.send('no items in the library');
+app.post('/media/get/all', async (req: Request, res: Response) => {
+    const email: Email = req.body.email
+    const token: String = req.body.token;
+
+    if (verifyAuthToken(email, token)) {
+        res.status(200)
+        res.send("Some library stuff")
+    }
+    else {
+        res.status(401)
+        res.send('Not authorized');
+    }
 });
 
-app.get('/media/get/item', async (_req: Request, res: Response) => {
+app.post('/media/get/item', async (req: Request, res: Response) => {
     res.send("there's no such thing");
 });
 

@@ -49,11 +49,20 @@ app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, f
         res.send({ "auth": false });
     }
 }));
-app.get('/auth/token/refresh', (_req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
-app.get('/media/get/all', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('no items in the library');
+app.post('/auth/token/refresh', (req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
+app.post('/media/get/all', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = req.body.email;
+    const token = req.body.token;
+    if (verifyAuthToken(email, token)) {
+        res.status(200);
+        res.send("Some library stuff");
+    }
+    else {
+        res.status(401);
+        res.send('Not authorized');
+    }
 }));
-app.get('/media/get/item', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/media/get/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send("there's no such thing");
 }));
 app.get('/media/reservation', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
