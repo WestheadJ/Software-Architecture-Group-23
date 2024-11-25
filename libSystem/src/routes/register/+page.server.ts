@@ -17,14 +17,6 @@ export const actions = {
 
     console.log(formData);
 
-    if (formData.email === '' || formData.password === '' || formData.passwordConfirm === '') {
-      console.log("Some fields aren't full");
-      return {
-        error: true,
-        status: 400,
-      };
-    }
-
     try {
       await locals.pb.collection('users').requestVerification(formData.email);
       await locals.pb.collection('users').create(formData);
