@@ -97,26 +97,21 @@ function verifyAuthToken(email: Email, token: String): Boolean {
         console.log("Invalid email", email)
         return false
     }
-
     if (API_Keys_Cache.get(email) !== token) {
         console.log("Invalid token: ", token)
         return false;
     }
-
     if (API_Keys_Cache.get(email) === token) {
         console.log("valid token")
         return true;
     }
-
     else {
         console.error("Something went wrong...")
         return false;
     }
-
 }
 
 function refreshToken(email: Email): String | Boolean {
-
     if (API_Keys_Cache.get(email) === undefined) {
         console.log("Invalid email", email)
         return false
