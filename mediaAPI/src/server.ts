@@ -130,12 +130,15 @@ function refreshToken(email: Email): String | Boolean {
 }
 
 function generateToken(email: Email): String | Boolean {
-    let token: String;
+    let token: String | Boolean;
     if (API_Keys_Cache.get(email) === undefined) {
         token = uuidv4()
         API_Keys_Cache.set(email, token)
         return token
     }
-    return false;
-
+    else {
+        token = refreshToken(email)
+        return token
+    }
 }
+

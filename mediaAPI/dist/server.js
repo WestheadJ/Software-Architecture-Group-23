@@ -33,19 +33,20 @@ app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     let token = generateToken(email);
+    console.log(token);
     res.status(200);
-    res.send(JSON.stringify(token));
+    res.send({ "token": token });
 }));
 app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const token = req.body.token;
     if (verifyAuthToken(email, token)) {
         res.status(200);
-        res.send(true);
+        res.send({ "auth": true });
     }
     else {
         res.status(401);
-        res.send(false);
+        res.send({ "auth": false });
     }
 }));
 app.get('/auth/token/refresh', (_req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
@@ -111,9 +112,10 @@ function generateToken(email) {
     if (API_Keys_Cache.get(email) === undefined) {
         token = (0, uuid_1.v4)();
         API_Keys_Cache.set(email, token);
+        return token;
     }
     else {
-        token = generateToken(email);
+        token = refreshToken(email);
+        return token;
     }
-    return token;
 }
