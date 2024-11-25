@@ -3,10 +3,8 @@
   import { enhance } from "$app/forms";
   import { goto } from "$app/navigation";
 
-  $: {
-    if ($page.form?.success) {
-      goto("/");
-    }
+  if ($page.form?.success) {
+    goto("/");
   }
 </script>
 
@@ -28,10 +26,9 @@
       class="input input-bordered w-full max-w-xs"
     />
     <button class="btn btn-primary mt-auto" type="submit">Login</button>
-    {#if $page.form?.success}<h1>Success!</h1>{/if}
-    {#if $page.form?.status === 400}<h1 class="text-red-400">
-        Invalid Login Credentials
-      </h1>{/if}
+    {#if $page.form?.error}
+      <h1 class="text-red-400">Invalid Login Credentials</h1>
+    {/if}
   </form>
 </div>
 

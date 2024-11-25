@@ -6,7 +6,7 @@ Due to the architecutre of the project, and it to be modular, the media database
 
 ## Decision Drivers:
 * A modular driven software and development
-* Clear link of data
+* Clear link of data between each related service
 
 ## Considered Options:
 * sqlite
@@ -57,7 +57,7 @@ Due to the architecutre of the project, and it to be modular, the media database
 
 
 ## Decision Outcome
-We decided on using surrealDB, it has enough documentation, it's extremely well scaleable and has NoSQL features and if needed a nice little GUI and will work well for the media DB
+We decided on using superbase, down to it being perfectly scable, for future sake of the system and it's running and funding, it's cheap. It has high secuirty implementations and it's well documented and can be quite easy to work with, it also seperated the database and the media API seperatley, decreasing the risk of attacks on the system in case of one. 
 
 ## References
 * InfoWorld. (n.d.). Why you should use SQLite. Retrieved November 18, 2024, from https://www.infoworld.com/article/2258587/why-you-should-use-sqlite.html
