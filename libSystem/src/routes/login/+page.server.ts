@@ -1,5 +1,5 @@
 import type { User } from "$lib/interfaces/User";
-import type { Actions } from "@sveltejs/kit";
+import { redirect, type Actions } from "@sveltejs/kit";
 
 export const actions = {
   default: async ({ locals, request }) => {
@@ -13,10 +13,14 @@ export const actions = {
     try {
       await locals.pb.collection('users').authWithPassword(formData.email, formData.password);
       await locals.pb.collection('users').authRefresh();
-      return { success: true, message: 'Successfully logged in' };
+      console.log(locals.pb.authStore.isValid);
     } catch (error) {
       console.log(error);
-      return { error: true, message: error };
+      return { error: true };
+    }
+
+    if (locals.pb.authStore.isValid) {
+      throw redirect(302, '/');
     }
   }
 } satisfies Actions;

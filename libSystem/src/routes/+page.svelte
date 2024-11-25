@@ -1,11 +1,10 @@
 <script>
-  import Navbar from "$lib/components/Navbar.svelte";
   import Hero from "$lib/components/Hero.svelte";
   import Card from "$lib/components/Card.svelte";
 </script>
 
-<Navbar />
 <Hero />
+
 <div class="w-full px-4">
   <div class="flex items-center justify-center relative">
     <div class="absolute left-0 flex items-center">
