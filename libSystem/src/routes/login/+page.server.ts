@@ -13,18 +13,24 @@ export const actions = {
     try {
       await locals.pb.collection('users').authWithPassword(formData.email, formData.password);
       await locals.pb.collection('users').authRefresh();
+
+      // get API key from mediaAPI
       const res = await fetch("http://127.0.0.1:3000/auth/token/get", {
         headers: { 'Content-Type': 'application/json' }, method: 'POST', body: JSON.stringify({ "email": formData.email })
       })
       const data = await res.json()
+
+      // If an error occurs, return an error
       if (data.status === "error") {
 
         return { error: true, message: `Token error! ${data.message}` };
       }
 
-      locals.pb.local["mediaAPIToken"] = data.token;
+      locals.mediaAPIKey = data.token
+
       return { success: true, message: 'Successfully logged in' };
-    } catch (error) {
+    }
+    catch (error) {
       console.log(error);
       return { error: true, message: error };
     }
