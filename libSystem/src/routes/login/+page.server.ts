@@ -13,7 +13,7 @@ export const actions = {
     try {
       await locals.pb.collection('users').authWithPassword(formData.email, formData.password);
       await locals.pb.collection('users').authRefresh();
-      console.log(locals.pb.authStore.isValid);
+      return { success: true, message: 'Successfully logged in' };
     } catch (error) {
       console.log(error);
       return { error: true };
