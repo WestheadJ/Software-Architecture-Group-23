@@ -27,7 +27,7 @@ export const actions = {
 
     } catch (error) {
       console.log("Error:", error);
-      return { error: true, message: error };
+      return { error: true };
     }
   }
 } satisfies Actions;

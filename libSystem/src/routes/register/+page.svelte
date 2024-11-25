@@ -13,7 +13,7 @@
 </script>
 
 <div class="w-screen h-screen flex">
-  <form method="POST" use:enhance>
+  <form method="POST" use:enhance class="h-fit">
     <h1 class="text-2xl text-center text-white font-semibold mb-2">Sign Up</h1>
     <label for="email">Email:</label>
     <input
@@ -37,8 +37,9 @@
       class="input input-bordered w-full max-w-xs"
     />
     <button class="btn btn-primary mt-auto" type="submit">Register</button>
-    {#if $page.form?.success}<h1 class="text-green-400 mt-2">Success!</h1>{/if}
-    {#if $page.form?.error}<h1 class="text-red-400 mt-2">Failure</h1>{/if}
+    {#if $page.form?.error}<h1 class="text-red-400 mt-2">
+        Failure Registering, you likely have an account with us already.
+      </h1>{/if}
   </form>
 </div>
 
