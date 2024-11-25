@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import NodeCache from 'node-cache';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
-import { error } from 'console';
+
 
 dotenv.config();
 
@@ -32,19 +32,11 @@ app.get('/', async (_req: Request, res: Response) => {
 app.post('/auth/token/get-token', async (req: Request, res: Response) => {
     const email: Email = req.body.email;
 
-    const token = uuidv4();
+    let token: String | Boolean = generateToken(email)
 
-    if (API_Keys_Cache.get(email) === undefined) {
-        API_Keys_Cache.set(email, token);
-
-        console.log('API key check', API_Keys_Cache.get(email));
-        res.status(200)
-        res.send(token);
-    }
-    else {
-        res.status
-        res.send("Token already exists!");
-    }
+    console.log(token)
+    res.status(200)
+    res.send({ "token": token })
 });
 
 app.post('/auth/token/verify', async (req: Request, res: Response) => {
@@ -53,11 +45,11 @@ app.post('/auth/token/verify', async (req: Request, res: Response) => {
 
     if (verifyAuthToken(email, token)) {
         res.status(200)
-        res.send(true)
+        res.send({ "auth": true })
     }
     else {
         res.status(401)
-        res.send(false)
+        res.send({ "auth": false })
     }
 })
 
@@ -135,5 +127,15 @@ function refreshToken(email: Email): String | Boolean {
         API_Keys_Cache.set("email", token)
         return token
     }
+}
+
+function generateToken(email: Email): String | Boolean {
+    let token: String;
+    if (API_Keys_Cache.get(email) === undefined) {
+        token = uuidv4()
+        API_Keys_Cache.set(email, token)
+        return token
+    }
+    return false;
 
 }

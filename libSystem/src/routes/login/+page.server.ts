@@ -14,21 +14,37 @@ export const actions = {
       await locals.pb.collection('users').authWithPassword(formData.email, formData.password);
       await locals.pb.collection('users').authRefresh();
 
+
       // get API key from mediaAPI
-      const res = await fetch("http://127.0.0.1:3000/auth/token/get", {
+      console.log("line 19: Getting API key")
+      const tokenResponse = await fetch("http://127.0.0.1:3000/auth/token/get-token", {
         headers: { 'Content-Type': 'application/json' }, method: 'POST', body: JSON.stringify({ "email": formData.email })
       })
-      const data = await res.json()
 
-      // If an error occurs, return an error
-      if (data.status === "error") {
+      if (tokenResponse.status === 401) {
+        console.log("Token error at line 25")
+        return { error: true, message: "Token Error" };
+      }
+      if (tokenResponse.status === 200) {
+        console.log("line 29: getting the json ")
+        const tokenResponseData = await tokenResponse.json()
+        // console.log(tokenResponseData)
 
-        return { error: true, message: `Token error! ${data.message}` };
+        locals.mediaAPIKey = tokenResponseData
+
+        const tokenAuthResponse = await fetch(`http://127.0.0.1:3000/auth/token/verify`, { headers: { 'Content-Type': 'application/json' }, method: 'POST', body: JSON.stringify({ "email": formData.email, "token": tokenResponseData }) })
+        const tokenAuthResponseData = await tokenAuthResponse.json()
+        if (tokenAuthResponseData) {
+          console.log(tokenAuthResponseData)
+          return { success: true, message: 'Successfully logged in' };
+        }
+        else {
+          console.log("Error")
+          return { error: true, message: "Token Error" };
+
+        }
       }
 
-      locals.mediaAPIKey = data.token
-
-      return { success: true, message: 'Successfully logged in' };
     }
     catch (error) {
       console.log(error);

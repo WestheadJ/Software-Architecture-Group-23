@@ -30,28 +30,23 @@ const API_Keys_Cache = new node_cache_1.default();
 app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('hello world!');
 }));
-app.post('/auth/token/get', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
-    const token = (0, uuid_1.v4)();
-    if (API_Keys_Cache.get(email) === undefined) {
-        API_Keys_Cache.set(email, token);
-        console.log('API key check', API_Keys_Cache.get(email));
-        res.send({
-            status: 'success',
-            token,
-            message: 'successful token creation',
-        });
+    let token = generateToken(email);
+    res.status(200);
+    res.send(JSON.stringify(token));
+}));
+app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = req.body.email;
+    const token = req.body.token;
+    if (verifyAuthToken(email, token)) {
+        res.status(200);
+        res.send(true);
     }
     else {
-        res.send({
-            status: 'error',
-            message: 'Token already exists!',
-        });
+        res.status(401);
+        res.send(false);
     }
-}));
-app.post('/auth/token/verify', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('verifying token');
-    res.send('yes');
 }));
 app.get('/auth/token/refresh', (_req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
 app.get('/media/get/all', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,3 +76,44 @@ app.delete('/media/delete', (_req, res) => __awaiter(void 0, void 0, void 0, fun
 app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
+function verifyAuthToken(email, token) {
+    if (API_Keys_Cache.get(email) === undefined) {
+        console.log("Invalid email", email);
+        return false;
+    }
+    if (API_Keys_Cache.get(email) !== token) {
+        console.log("Invalid token: ", token);
+        return false;
+    }
+    if (API_Keys_Cache.get(email) === token) {
+        console.log("valid token");
+        return true;
+    }
+    else {
+        console.error("Something went wrong...");
+        return false;
+    }
+}
+function refreshToken(email) {
+    if (API_Keys_Cache.get(email) === undefined) {
+        console.log("Invalid email", email);
+        return false;
+    }
+    else {
+        API_Keys_Cache.del("email");
+        const token = (0, uuid_1.v4)();
+        API_Keys_Cache.set("email", token);
+        return token;
+    }
+}
+function generateToken(email) {
+    let token;
+    if (API_Keys_Cache.get(email) === undefined) {
+        token = (0, uuid_1.v4)();
+        API_Keys_Cache.set(email, token);
+    }
+    else {
+        token = generateToken(email);
+    }
+    return token;
+}
