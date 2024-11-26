@@ -40,6 +40,7 @@ app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0
 app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const token = req.body.token;
+    console.log(token);
     console.log(`Token being verified by: ${email}, token: ${token}`);
     if (verifyAuthToken(email, token)) {
         console.log(`${email}'s token verified`);

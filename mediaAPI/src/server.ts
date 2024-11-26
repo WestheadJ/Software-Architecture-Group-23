@@ -41,7 +41,7 @@ app.post('/auth/token/get-token', async (req: Request, res: Response) => {
 app.post('/auth/token/verify', async (req: Request, res: Response) => {
     const email: Email = req.body.email
     const token: String = req.body.token;
-
+    console.log(token)
     console.log(`Token being verified by: ${email}, token: ${token}`)
 
     if (verifyAuthToken(email, token)) {

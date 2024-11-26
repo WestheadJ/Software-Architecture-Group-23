@@ -33,13 +33,17 @@ export const actions = {
 
     }
 
-    // const isTokenVerified = await verifyToken(formData.email as Email, locals.mediaAPIKey)
-    // console.log("Is token verified: ", isTokenVerified)
+    const isTokenVerified = await verifyToken(formData.email as Email, locals.mediaAPIKey)
 
 
-    if (locals.pb.authStore.isValid && locals.mediaAPIKey !== undefined) {
+    console.log("Is token verified: ", isTokenVerified)
+
+
+    if (locals.pb.authStore.isValid && isTokenVerified) {
       throw redirect(302, '/');
     }
-
+    else {
+      locals.pb.authStore.clear();
+    }
   }
 } satisfies Actions;
