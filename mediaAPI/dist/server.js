@@ -91,6 +91,7 @@ app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
 function verifyAuthToken(email, token) {
+    console.log(API_Keys_Cache.get(email));
     if (API_Keys_Cache.get(email) === undefined) {
         console.log("Invalid email", email);
         return false;
@@ -114,7 +115,9 @@ function refreshToken(email) {
         return false;
     }
     else {
+        console.log("Deleting token");
         API_Keys_Cache.del("email");
+        console.log("Token");
         const token = (0, uuid_1.v4)();
         API_Keys_Cache.set("email", token);
         return token;
@@ -123,11 +126,13 @@ function refreshToken(email) {
 function generateToken(email) {
     let token;
     if (API_Keys_Cache.get(email) === undefined) {
+        console.log("Creating new token");
         token = (0, uuid_1.v4)();
         API_Keys_Cache.set(email, token);
         return token;
     }
     else {
+        console.log("refreshing token");
         token = refreshToken(email);
         return token;
     }

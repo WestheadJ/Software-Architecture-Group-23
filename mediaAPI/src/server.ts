@@ -34,6 +34,7 @@ app.post('/auth/token/get-token', async (req: Request, res: Response) => {
     console.log("Token requested by:", email)
 
     let token: String | Boolean = generateToken(email)
+
     res.status(200)
     res.send({ "token": token })
 });
@@ -131,7 +132,9 @@ function refreshToken(email: Email): String | Boolean {
         return false
     }
     else {
+        console.log("Deleting token")
         API_Keys_Cache.del("email")
+        console.log("Token")
         const token = uuidv4();
         API_Keys_Cache.set("email", token)
         return token
@@ -141,11 +144,13 @@ function refreshToken(email: Email): String | Boolean {
 function generateToken(email: Email): String | Boolean {
     let token: String | Boolean;
     if (API_Keys_Cache.get(email) === undefined) {
+        console.log("Creating new token")
         token = uuidv4()
         API_Keys_Cache.set(email, token)
         return token
     }
     else {
+        console.log("refreshing token")
         token = refreshToken(email)
         return token
     }
