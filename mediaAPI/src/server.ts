@@ -134,9 +134,9 @@ function refreshToken(email: Email): String | Boolean {
     else {
         console.log("Deleting token")
         API_Keys_Cache.del("email")
-        console.log("Token")
+        console.log("Creating new token")
         const token = uuidv4();
-        API_Keys_Cache.set("email", token)
+        API_Keys_Cache.set(email, token)
         return token
     }
 }
