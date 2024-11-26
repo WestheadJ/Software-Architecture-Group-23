@@ -1,4 +1,10 @@
 node_modules
+<<<<<<< HEAD
+/.env
+.DS_STORE
+mediaAPI/.env
+=======
 ./libSystem/node_modules
 .env
 .DS_STORE
+>>>>>>> master

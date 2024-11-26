@@ -9,6 +9,7 @@ declare global {
 		interface Locals {
 			pb: PocketBase;
 			user: User;
+			mediaAPIKey: String;
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -16,4 +17,4 @@ declare global {
 	}
 }
 
-export {};
+export { };
