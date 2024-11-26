@@ -3,7 +3,11 @@
   import "../app.css";
   import type { LayoutData } from "./$types";
   import type { Snippet } from "svelte";
+  import { page } from "$app/stores";
+
   let { children, data }: { data: LayoutData; children: Snippet } = $props();
+  let currentPageUrl: String = $page.url.pathname;
+  console.log(currentPageUrl);
 </script>
 
 <div class="navbar bg-base-100 fixed z-50">
@@ -50,7 +54,7 @@
       />
       <h1>AML Library</h1>
     </a>
-    {#if data.isAuthenticated}
+    {#if currentPageUrl !== "/login" && currentPageUrl !== "/register"}
       <div class="form-control w-full max-w-sm">
         <input
           type="text"
