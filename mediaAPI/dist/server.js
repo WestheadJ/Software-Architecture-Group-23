@@ -32,19 +32,22 @@ app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
+    console.log("Token requested by:", email);
     let token = generateToken(email);
-    console.log(token);
     res.status(200);
     res.send({ "token": token });
 }));
 app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const token = req.body.token;
+    console.log(`Token being verified by: ${email}, token: ${token}`);
     if (verifyAuthToken(email, token)) {
+        console.log(`${email}'s token verified`);
         res.status(200);
         res.send({ "auth": true });
     }
     else {
+        console.log(`${email}'s token not verified`);
         res.status(401);
         res.send({ "auth": false });
     }

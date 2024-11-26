@@ -31,10 +31,9 @@ app.get('/', async (_req: Request, res: Response) => {
 
 app.post('/auth/token/get-token', async (req: Request, res: Response) => {
     const email: Email = req.body.email;
+    console.log("Token requested by:", email)
 
     let token: String | Boolean = generateToken(email)
-
-    console.log(token)
     res.status(200)
     res.send({ "token": token })
 });
@@ -43,11 +42,16 @@ app.post('/auth/token/verify', async (req: Request, res: Response) => {
     const email: Email = req.body.email
     const token: String = req.body.token;
 
+    console.log(`Token being verified by: ${email}, token: ${token}`)
+
     if (verifyAuthToken(email, token)) {
+        console.log(`${email}'s token verified`)
         res.status(200)
         res.send({ "auth": true })
     }
     else {
+        console.log(`${email}'s token not verified`)
+
         res.status(401)
         res.send({ "auth": false })
     }

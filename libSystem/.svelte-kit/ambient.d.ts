@@ -26,7 +26,6 @@
  * ```
  */
 declare module '$env/static/private' {
-<<<<<<< HEAD
 	export const MANPATH: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -87,62 +86,6 @@ declare module '$env/static/private' {
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
-=======
-	export const DISPLAY: string;
-	export const VTE_VERSION: string;
-	export const MAIL: string;
-	export const MOTD_SHOWN: string;
-	export const XDG_SESSION_TYPE: string;
-	export const HG: string;
-	export const LC_MEASUREMENT: string;
-	export const XDG_SESSION_DESKTOP: string;
-	export const GTK_MODULES: string;
-	export const PWD: string;
-	export const DESKTOP_SESSION: string;
-	export const LC_MONETARY: string;
-	export const XDG_GREETER_DATA_DIR: string;
-	export const GDMSESSION: string;
-	export const XDG_SESSION_PATH: string;
-	export const MASON: string;
-	export const DEBUGINFOD_URLS: string;
-	export const XDG_SEAT_PATH: string;
-	export const ANDROID_HOME: string;
-	export const VIMRUNTIME: string;
-	export const GTK3_MODULES: string;
-	export const BROWSER: string;
-	export const WINDOWID: string;
-	export const USER: string;
-	export const XDG_RUNTIME_DIR: string;
-	export const XDG_SEAT: string;
-	export const TERM: string;
-	export const LC_NUMERIC: string;
-	export const LC_NAME: string;
-	export const XDG_SESSION_ID: string;
-	export const COLORTERM: string;
-	export const UBUNTU_MENUPROXY: string;
-	export const LC_TELEPHONE: string;
-	export const LC_ADDRESS: string;
-	export const ANDROID_SDK_ROOT: string;
-	export const XAUTHORITY: string;
-	export const EDITOR: string;
-	export const LC_PAPER: string;
-	export const DBUS_SESSION_BUS_ADDRESS: string;
-	export const NVIM: string;
-	export const SHELL: string;
-	export const HOME: string;
-	export const LOGNAME: string;
-	export const SHLVL: string;
-	export const XDG_CURRENT_DESKTOP: string;
-	export const LANG: string;
-	export const NVIM_LOG_FILE: string;
-	export const PATH: string;
-	export const MYVIMRC: string;
-	export const LC_IDENTIFICATION: string;
-	export const XDG_VTNR: string;
-	export const I3SOCK: string;
-	export const XDG_SESSION_CLASS: string;
-	export const LC_TIME: string;
->>>>>>> master
 	export const NODE_ENV: string;
 }
 
@@ -175,7 +118,6 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-<<<<<<< HEAD
 		MANPATH: string;
 		TERM_PROGRAM: string;
 		NODE: string;
@@ -236,62 +178,6 @@ declare module '$env/dynamic/private' {
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
-=======
-		DISPLAY: string;
-		VTE_VERSION: string;
-		MAIL: string;
-		MOTD_SHOWN: string;
-		XDG_SESSION_TYPE: string;
-		HG: string;
-		LC_MEASUREMENT: string;
-		XDG_SESSION_DESKTOP: string;
-		GTK_MODULES: string;
-		PWD: string;
-		DESKTOP_SESSION: string;
-		LC_MONETARY: string;
-		XDG_GREETER_DATA_DIR: string;
-		GDMSESSION: string;
-		XDG_SESSION_PATH: string;
-		MASON: string;
-		DEBUGINFOD_URLS: string;
-		XDG_SEAT_PATH: string;
-		ANDROID_HOME: string;
-		VIMRUNTIME: string;
-		GTK3_MODULES: string;
-		BROWSER: string;
-		WINDOWID: string;
-		USER: string;
-		XDG_RUNTIME_DIR: string;
-		XDG_SEAT: string;
-		TERM: string;
-		LC_NUMERIC: string;
-		LC_NAME: string;
-		XDG_SESSION_ID: string;
-		COLORTERM: string;
-		UBUNTU_MENUPROXY: string;
-		LC_TELEPHONE: string;
-		LC_ADDRESS: string;
-		ANDROID_SDK_ROOT: string;
-		XAUTHORITY: string;
-		EDITOR: string;
-		LC_PAPER: string;
-		DBUS_SESSION_BUS_ADDRESS: string;
-		NVIM: string;
-		SHELL: string;
-		HOME: string;
-		LOGNAME: string;
-		SHLVL: string;
-		XDG_CURRENT_DESKTOP: string;
-		LANG: string;
-		NVIM_LOG_FILE: string;
-		PATH: string;
-		MYVIMRC: string;
-		LC_IDENTIFICATION: string;
-		XDG_VTNR: string;
-		I3SOCK: string;
-		XDG_SESSION_CLASS: string;
-		LC_TIME: string;
->>>>>>> master
 		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
