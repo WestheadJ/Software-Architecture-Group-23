@@ -1,4 +1,4 @@
-import type { Email } from "$lib/types/types";
+import type { Email } from "$lib/types/types.ts"
 
 export async function getToken(email: Email): Promise<String> {
     const getTokenResponse = await fetch("http://127.0.0.1:3000/auth/token/get-token", { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "email": email }) })
