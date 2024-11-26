@@ -1,11 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { enhance } from "$app/forms";
-  import { goto } from "$app/navigation";
-
-  // if ($page.form?.success) {
-  //   goto("/");
-  // }
 </script>
 
 <div class="w-screen h-screen flex">

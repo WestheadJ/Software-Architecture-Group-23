@@ -19,6 +19,8 @@ export const actions = {
 
     } catch (error) {
       console.log(error);
+      locals.pb.authStore.clear();
+
       return { error: true };
     }
 
@@ -29,6 +31,8 @@ export const actions = {
     }
     catch (err) {
       console.log("Error getting token:", err)
+      locals.pb.authStore.clear();
+
       return { error: true };
 
     }

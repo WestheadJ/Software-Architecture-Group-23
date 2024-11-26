@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { format } from 'path';
-	import '../app.css';
-  import type { LayoutData } from './$types';
-  import type { Snippet } from 'svelte';
-	let { children, data }: {data: LayoutData, children: Snippet } = $props();
+  import { format } from "path";
+  import "../app.css";
+  import type { LayoutData } from "./$types";
+  import type { Snippet } from "svelte";
+  let { children, data }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
 <div class="navbar bg-base-100 fixed z-50">
@@ -29,7 +29,7 @@
         tabindex="0"
         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
       >
-      <li><a href="/profile">Profile</a></li>
+        <li><a href="/profile">Profile</a></li>
         <li>
           <a>Parent</a>
           <ul class="p-2">
@@ -50,14 +50,16 @@
       />
       <h1>AML Library</h1>
     </a>
-    <div class="form-control w-full max-w-sm">
-      <input
-        type="text"
-        placeholder="Search media?"
-        class="input input-bordered rounded-full px-4"
-        aria-label="Search"
-      />
-    </div>
+    {#if data.isAuthenticated}
+      <div class="form-control w-full max-w-sm">
+        <input
+          type="text"
+          placeholder="Search media?"
+          class="input input-bordered rounded-full px-4"
+          aria-label="Search"
+        />
+      </div>
+    {/if}
   </div>
   <div class="navbar-end gap-2">
     {#if !data.isAuthenticated}
