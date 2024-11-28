@@ -9,7 +9,8 @@ declare global {
 		interface Locals {
 			pb: PocketBase;
 			user: User;
-			mediaAPIKey: String;
+			mediaAPIKey: String| null;
+			user: { id: string; email: string } | null; 
 		}
 		// interface PageData {}
 		// interface PageState {}
