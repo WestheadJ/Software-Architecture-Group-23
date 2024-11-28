@@ -1,5 +1,5 @@
 import type { User } from "$lib/interfaces/User";
-import { type Actions } from "@sveltejs/kit";
+import { redirect, type Actions } from "@sveltejs/kit";
 
 export const actions = {
   default: async ({ locals, request }) => {
@@ -10,24 +10,22 @@ export const actions = {
       passwordConfirm: data.get('passwordConfirm') as string,
     };
 
-    const authData = {
-      email: formData.email,
-      password: formData.password,
-    };
-
     console.log(formData);
+    let returnedSuccess: boolean = false;
 
     try {
       await locals.pb.collection('users').requestVerification(formData.email);
       await locals.pb.collection('users').create(formData);
-      await locals.pb.collection('users').authWithPassword(authData.email, authData.password);
-
-      console.log(locals.pb.authStore.isValid);
-      return { success: true, message: 'User created and authenticated successfully.' };
-
+      console.log("This should return true");
+      returnedSuccess = true;
     } catch (error) {
       console.log("Error:", error);
       return { error: true };
+    }
+
+    // This is so hacky I'm ashamed.
+    if (returnedSuccess) {
+      throw redirect(301, '/login');
     }
   }
 } satisfies Actions;
