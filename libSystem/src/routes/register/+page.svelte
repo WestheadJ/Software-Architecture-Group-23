@@ -7,7 +7,7 @@
 
   $: {
     if (form?.success) {
-      goto("/");
+      goto("/login");
     }
   }
 </script>
