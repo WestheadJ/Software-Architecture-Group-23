@@ -1,13 +1,43 @@
 <script lang="ts">
-  import { format } from "path";
   import "../app.css";
   import type { LayoutData } from "./$types";
   import type { Snippet } from "svelte";
   import { page } from "$app/stores";
-
   let { children, data }: { data: LayoutData; children: Snippet } = $props();
   let currentPageUrl: String = $page.url.pathname;
-  console.log(currentPageUrl);
+
+  let searchQuery = $state();
+
+  let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
+  const debounceTime: number = 500;
+
+  $effect(() => {
+    handleInput(searchQuery);
+  });
+
+  function handleInput(searchQuery: String | any) {
+    console.log(searchQuery);
+
+    clearTimeout(timeout!); // Clear the previous debounce timer
+    timeout = setTimeout(() => {
+      searchBar(); // Trigger the search
+    }, debounceTime);
+  }
+  async function searchBar() {
+    console.log(data.mediaAPIKey);
+    // const response = await fetch("/search/search-bar", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     token: data.mediaAPIKey,
+    //     email: data.mediaAPIKey.email,
+    //     value: searchQuery,
+    //   }),
+    // });
+
+    // const result = await response.json();
+    // console.log("Server Response:", result);
+  }
 </script>
 
 <div class="navbar bg-base-100 fixed z-50">
@@ -54,14 +84,16 @@
       />
       <h1>AML Library</h1>
     </a>
-    {#if currentPageUrl !== "/login" && currentPageUrl !== "/register"}
+    {#if (currentPageUrl !== "/login" && currentPageUrl !== "/register") || data.isAuthenticated}
       <div class="form-control w-full max-w-sm">
         <input
           type="text"
           placeholder="Search media?"
           class="input input-bordered rounded-full px-4"
           aria-label="Search"
+          bind:value={searchQuery}
         />
+        {searchQuery}
       </div>
     {/if}
   </div>

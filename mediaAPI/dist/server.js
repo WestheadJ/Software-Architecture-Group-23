@@ -25,11 +25,13 @@ const PORT = process.env.PORT || 3000;
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
-const supabase = (0, supabase_js_1.createClient)(process.env.URL, process.env.PUBLIC_KEY);
-const API_Keys_Cache = new node_cache_1.default();
+const supabase = (0, supabase_js_1.createClient)(process.env.PUBLIC_SUPABASE_URL, process.env.PUBLIC_SUPABASE_ANON_KEY);
+const API_KEYS_CACHE = new node_cache_1.default();
+const SEARCH_CACHE = new node_cache_1.default();
 app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('hello world!');
 }));
+// Token Auth Endpoints
 app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     console.log("Token requested by:", email);
@@ -54,20 +56,22 @@ app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 app.post('/auth/token/refresh', (req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
-app.post('/media/get/all', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Search endpoints
+app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const token = req.body.token;
+    const value = req.body.value;
     if (verifyAuthToken(email, token)) {
-        searchMedia();
+        const result = yield searchBarMediaByTitle(value);
         res.status(200);
-        res.send("Some library stuff");
+        res.send({ "result": result });
     }
     else {
         res.status(401);
         res.send('Not authorized');
     }
 }));
-app.post('/media/get/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send("there's no such thing");
 }));
 app.get('/media/reservation', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -92,15 +96,15 @@ app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
 function verifyAuthToken(email, token) {
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email);
         return false;
     }
-    if (API_Keys_Cache.get(email) !== token) {
+    if (API_KEYS_CACHE.get(email) !== token) {
         console.log("Invalid token: ", token);
         return false;
     }
-    if (API_Keys_Cache.get(email) === token) {
+    if (API_KEYS_CACHE.get(email) === token) {
         console.log("valid token");
         return true;
     }
@@ -110,25 +114,25 @@ function verifyAuthToken(email, token) {
     }
 }
 function refreshToken(email) {
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email);
         return false;
     }
     else {
         console.log("Deleting token");
-        API_Keys_Cache.del("email");
+        API_KEYS_CACHE.del("email");
         console.log("Creating new token");
         const token = (0, uuid_1.v4)();
-        API_Keys_Cache.set(email, token);
+        API_KEYS_CACHE.set(email, token);
         return token;
     }
 }
 function generateToken(email) {
     let token;
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Creating new token");
         token = (0, uuid_1.v4)();
-        API_Keys_Cache.set(email, token);
+        API_KEYS_CACHE.set(email, token);
         return token;
     }
     else {
@@ -137,11 +141,16 @@ function generateToken(email) {
         return token;
     }
 }
-function searchMedia() {
+function searchBarMediaByTitle(value) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data, error } = yield supabase
             .from('media')
-            .select('*');
+            .select('title, authors, genre, media_type').range(0, 5).ilike('title', `${value}`);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
         console.log(data);
+        return { "success": true, "data": data };
     });
 }

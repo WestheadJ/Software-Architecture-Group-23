@@ -17,11 +17,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const supabase = createClient(
-    process.env.URL as string,
-    process.env.PUBLIC_KEY as string
+    process.env.PUBLIC_SUPABASE_URL as string,
+    process.env.PUBLIC_SUPABASE_ANON_KEY as string
 );
 
-const API_Keys_Cache = new NodeCache();
+const API_KEYS_CACHE = new NodeCache();
+
+const SEARCH_CACHE = new NodeCache();
 
 type Email = `${string}@${string}`;
 
@@ -29,6 +31,7 @@ app.get('/', async (_req: Request, res: Response) => {
     res.send('hello world!');
 });
 
+// Token Auth Endpoints
 app.post('/auth/token/get-token', async (req: Request, res: Response) => {
     const email: Email = req.body.email;
     console.log("Token requested by:", email)
@@ -58,17 +61,18 @@ app.post('/auth/token/verify', async (req: Request, res: Response) => {
     }
 })
 
-
 app.post('/auth/token/refresh', async (req: Request, res: Response) => { });
 
-app.post('/media/get/all', async (req: Request, res: Response) => {
+// Search endpoints
+app.post('/media/search/search-bar', async (req: Request, res: Response) => {
     const email: Email = req.body.email
     const token: String = req.body.token;
+    const value: String = req.body.value;
 
     if (verifyAuthToken(email, token)) {
-        searchMedia()
+        const result = await searchBarMediaByTitle(value)
         res.status(200)
-        res.send("Some library stuff")
+        res.send({ "result": result })
     }
     else {
         res.status(401)
@@ -76,7 +80,7 @@ app.post('/media/get/all', async (req: Request, res: Response) => {
     }
 });
 
-app.post('/media/get/item', async (req: Request, res: Response) => {
+app.post('/media/search/item', async (req: Request, res: Response) => {
     res.send("there's no such thing");
 });
 
@@ -109,15 +113,15 @@ app.listen(PORT, () => {
 });
 
 function verifyAuthToken(email: Email, token: String): Boolean {
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email)
         return false
     }
-    if (API_Keys_Cache.get(email) !== token) {
+    if (API_KEYS_CACHE.get(email) !== token) {
         console.log("Invalid token: ", token)
         return false;
     }
-    if (API_Keys_Cache.get(email) === token) {
+    if (API_KEYS_CACHE.get(email) === token) {
         console.log("valid token")
         return true;
     }
@@ -128,26 +132,26 @@ function verifyAuthToken(email: Email, token: String): Boolean {
 }
 
 function refreshToken(email: Email): String | Boolean {
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email)
         return false
     }
     else {
         console.log("Deleting token")
-        API_Keys_Cache.del("email")
+        API_KEYS_CACHE.del("email")
         console.log("Creating new token")
         const token = uuidv4();
-        API_Keys_Cache.set(email, token)
+        API_KEYS_CACHE.set(email, token)
         return token
     }
 }
 
 function generateToken(email: Email): String | Boolean {
     let token: String | Boolean;
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Creating new token")
         token = uuidv4()
-        API_Keys_Cache.set(email, token)
+        API_KEYS_CACHE.set(email, token)
         return token
     }
     else {
@@ -157,9 +161,14 @@ function generateToken(email: Email): String | Boolean {
     }
 }
 
-async function searchMedia() {
+async function searchBarMediaByTitle(value: String) {
     const { data, error } = await supabase
         .from('media')
-        .select('*')
+        .select('title, authors, genre, media_type').range(0, 5).ilike('title', `${value}`);
+    if (error) {
+        console.log(error)
+        return { "success": false, "error": error }
+    }
     console.log(data)
+    return { "success": true, "data": data }
 }

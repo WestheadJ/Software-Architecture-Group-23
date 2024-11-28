@@ -1,7 +1,8 @@
 import type { User } from "$lib/interfaces/User";
-import { getToken, verifyToken } from "$lib/api/mediaAPI";
+import { getToken, verifyToken } from "$lib/api/mediaAPITokens";
 import { redirect, type Actions } from "@sveltejs/kit";
 import type { Email } from "$lib/types/types";
+import type { MediaAPIKey } from "$lib/interfaces/mediaAPIToken";
 
 export const actions = {
   default: async ({ locals, request }) => {
@@ -24,10 +25,9 @@ export const actions = {
       return { error: true };
     }
 
-    let token: String;
     try {
-      token = await getToken(formData.email as Email)
-      locals.mediaAPIKey = token;
+      let token = await getToken(formData.email as Email)
+      locals.mediaAPIKey = token
     }
     catch (err) {
       console.log("Error getting token:", err)
@@ -37,8 +37,7 @@ export const actions = {
 
     }
 
-    const isTokenVerified = await verifyToken(formData.email as Email, locals.mediaAPIKey)
-
+    const isTokenVerified = await verifyToken(formData.email as Email, locals.mediaAPIKey.token)
 
     console.log("Is token verified: ", isTokenVerified)
 
