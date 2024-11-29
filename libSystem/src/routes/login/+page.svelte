@@ -1,11 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { enhance } from "$app/forms";
-  import { goto } from "$app/navigation";
-
-  // if ($page.form?.success) {
-  //   goto("/");
-  // }
 </script>
 
 <div class="w-screen h-screen flex">
@@ -28,12 +23,14 @@
     <button class="btn btn-primary mt-auto" type="submit">Login</button>
     {#if $page.form?.error}
       <h1 class="text-red-400">Invalid Login Credentials</h1>
+    {:else if $page.form?.invalid}
+      <h1 class="text-red-500">Failed to Authenticate API Token</h1>
     {/if}
   </form>
 </div>
 
 <style>
   form {
-    @apply w-[20rem] h-[20rem] bg-zinc-900 rounded-lg p-2 flex flex-col gap-2 m-auto p-4;
+    @apply w-[20rem] h-[20rem] bg-zinc-900 rounded-lg p-2 flex flex-col gap-2 m-auto;
   }
 </style>

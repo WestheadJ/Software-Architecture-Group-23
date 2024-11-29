@@ -58,6 +58,7 @@ app.post('/media/get/all', (req, res) => __awaiter(void 0, void 0, void 0, funct
     const email = req.body.email;
     const token = req.body.token;
     if (verifyAuthToken(email, token)) {
+        searchMedia();
         res.status(200);
         res.send("Some library stuff");
     }
@@ -135,4 +136,12 @@ function generateToken(email) {
         token = refreshToken(email);
         return token;
     }
+}
+function searchMedia() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase
+            .from('media')
+            .select('*');
+        console.log(data);
+    });
 }

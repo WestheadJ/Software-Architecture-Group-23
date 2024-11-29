@@ -66,6 +66,7 @@ app.post('/media/get/all', async (req: Request, res: Response) => {
     const token: String = req.body.token;
 
     if (verifyAuthToken(email, token)) {
+        searchMedia()
         res.status(200)
         res.send("Some library stuff")
     }
@@ -156,3 +157,9 @@ function generateToken(email: Email): String | Boolean {
     }
 }
 
+async function searchMedia() {
+    const { data, error } = await supabase
+        .from('media')
+        .select('*')
+    console.log(data)
+}
