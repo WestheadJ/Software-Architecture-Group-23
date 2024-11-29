@@ -51,6 +51,7 @@ export const actions = {
     }
     else {
       locals.pb.authStore.clear();
+      locals.mediaAPIKey = "";
       console.log("Failed to redirect");
     }
   }
