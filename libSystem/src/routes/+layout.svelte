@@ -17,13 +17,14 @@
   });
 
   function handleInput(searchQuery: String | any) {
-    clearTimeout(timeout!); // Clear the previous debounce timer
+    clearTimeout(timeout!);
     timeout = setTimeout(() => {
-      searchBar(); // Trigger the search
+      if (searchQuery.length != 0) {
+        searchBar();
+      }
     }, debounceTime);
   }
   async function searchBar() {
-    // console.log(data.apiKey);
     const response = await fetch("/search/search-bar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -91,7 +92,7 @@
           bind:value={searchQuery}
         />
         <!-- Dropdown -->
-        {#if searchBarResults.length > 0 || searchQuery.length}
+        {#if searchBarResults.length > 0 && searchQuery.length > 0}
           <ul
             class="absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
           >
@@ -100,7 +101,7 @@
                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onclick={() => console.log(suggestion)}
               >
-                Title: {suggestion.title}, Media Type: {suggestion.media_type}
+                {suggestion.media_type} | {suggestion.title}
               </li>
             {/each}
           </ul>
