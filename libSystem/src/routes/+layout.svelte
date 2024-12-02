@@ -3,39 +3,11 @@
   import type { LayoutData } from "./$types";
   import type { Snippet } from "svelte";
   import { page } from "$app/stores";
+  import SearchBar from "$lib/components/SearchBar.svelte";
   let { children, data }: { data: LayoutData; children: Snippet } = $props();
-  let currentPageUrl: String = $page.url.pathname;
+  let currentPageUrl: string = $page.url.pathname;
 
-  let searchQuery: string = $state("");
-  let searchBarResults = $state<string[]>([]);
-
-  let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
-  const debounceTime: number = 500;
-
-  $effect(() => {
-    handleInput(searchQuery);
-  });
-
-  function handleInput(searchQuery: String | any) {
-    clearTimeout(timeout!);
-    timeout = setTimeout(() => {
-      if (searchQuery.length != 0) {
-        searchBar();
-      }
-    }, debounceTime);
-  }
-  async function searchBar() {
-    const response = await fetch("/search/search-bar", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ value: searchQuery }),
-    });
-    const result = await response.json();
-    searchBarResults = result.data.data;
-    searchBarResults.forEach((element) => {
-      console.log(element);
-    });
-  }
+  const ignoredPages: string[] = ["/login", "/register", "/"];
 </script>
 
 <div class="navbar bg-base-100 fixed z-50">
@@ -82,31 +54,8 @@
       />
       <h1>AML Library</h1>
     </a>
-    {#if (currentPageUrl !== "/login" && currentPageUrl !== "/register") || data.isAuthenticated}
-      <div class="form-control w-full max-w-sm">
-        <input
-          type="text"
-          placeholder="Search media?"
-          class="input input-bordered rounded-full px-4"
-          aria-label="Search"
-          bind:value={searchQuery}
-        />
-        <!-- Dropdown -->
-        {#if searchBarResults.length > 0 && searchQuery.length > 0}
-          <ul
-            class="absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
-          >
-            {#each searchBarResults as suggestion}
-              <li
-                class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onclick={() => console.log(suggestion)}
-              >
-                {suggestion.media_type} | {suggestion.title}
-              </li>
-            {/each}
-          </ul>
-        {/if}
-      </div>
+    {#if !ignoredPages.includes(currentPageUrl) && data.isAuthenticated}
+      <SearchBar />
     {/if}
   </div>
   <div class="navbar-end gap-2">
