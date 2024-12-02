@@ -62,12 +62,13 @@ app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, voi
     const email = req.body.email;
     const token = req.body.token;
     const value = req.body.value;
-    if (verifyAuthToken(email, token)) {
+    try {
         const result = yield searchBarMediaByTitle(value);
         res.status(200);
         res.send({ "result": result });
     }
-    else {
+    catch (err) {
+        console.log(err);
         res.status(401);
         res.send('Not authorized');
     }
@@ -144,9 +145,10 @@ function generateToken(email) {
 }
 function searchBarMediaByTitle(value) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("168", value);
         const { data, error } = yield supabase
             .from('media')
-            .select('title, authors, genre, media_type').range(0, 5).ilike('title', `${value}`);
+            .select('title, authors, genre, media_type').ilike('title', `%${value}%`).range(0, 5);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };

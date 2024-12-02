@@ -71,12 +71,13 @@ app.post('/media/search/search-bar', async (req: Request, res: Response) => {
     const token: String = req.body.token;
     const value: String = req.body.value;
 
-    if (verifyAuthToken(email, token)) {
+    try {
         const result = await searchBarMediaByTitle(value)
         res.status(200)
         res.send({ "result": result })
     }
-    else {
+    catch (err) {
+        console.log(err)
         res.status(401)
         res.send('Not authorized');
     }
@@ -166,11 +167,10 @@ function generateToken(email: Email): String | Boolean {
 async function searchBarMediaByTitle(value: String) {
     const { data, error } = await supabase
         .from('media')
-        .select('title, authors, genre, media_type').range(0, 5).ilike('title', `${value}`);
+        .select('title, authors, genre, media_type').ilike('title', `%${value}%`).range(0, 5);
     if (error) {
         console.log(error)
         return { "success": false, "error": error }
     }
-    console.log(data)
     return { "success": true, "data": data }
 }

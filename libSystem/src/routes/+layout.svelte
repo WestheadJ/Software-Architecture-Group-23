@@ -6,7 +6,8 @@
   let { children, data }: { data: LayoutData; children: Snippet } = $props();
   let currentPageUrl: String = $page.url.pathname;
 
-  let searchQuery = $state();
+  let searchQuery: string = $state("");
+  let searchBarResults = $state<string[]>([]);
 
   let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
   const debounceTime: number = 500;
@@ -22,18 +23,17 @@
     }, debounceTime);
   }
   async function searchBar() {
-    console.log(data.apiKey);
-    // const response = await fetch("/search/search-bar", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     token: data.mediaAPIKey,
-    //     email: data.mediaAPIKey.email,
-    //     value: searchQuery,
-    //   }),
-    // });
-    // const result = await response.json();
-    // console.log("Server Response:", result);
+    // console.log(data.apiKey);
+    const response = await fetch("/search/search-bar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value: searchQuery }),
+    });
+    const result = await response.json();
+    searchBarResults = result.data.data;
+    searchBarResults.forEach((element) => {
+      console.log(element);
+    });
   }
 </script>
 
@@ -90,7 +90,21 @@
           aria-label="Search"
           bind:value={searchQuery}
         />
-        {searchQuery}
+        <!-- Dropdown -->
+        {#if searchBarResults.length > 0 || searchQuery.length}
+          <ul
+            class="absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
+          >
+            {#each searchBarResults as suggestion}
+              <li
+                class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onclick={() => console.log(suggestion)}
+              >
+                Title: {suggestion.title}, Media Type: {suggestion.media_type}
+              </li>
+            {/each}
+          </ul>
+        {/if}
       </div>
     {/if}
   </div>
