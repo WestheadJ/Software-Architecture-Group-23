@@ -10,7 +10,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
 
-    let cookie = event.cookies.get("session_key")
+    let cookie = JSON.stringify(event.cookies.get("session_key"))
 
     console.log("line 15:", cookie)
 
@@ -18,7 +18,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 
     response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false }));
-    response.headers.set('set-cookie', cookieSerialize("session_key", event.locals.mediaAPIKey))
+    response.headers.set('set-cookie', cookieSerialize("session_key", JSON.stringify(event.locals.mediaAPIKey)))
 
     return response;
 }

@@ -38,9 +38,10 @@ export const actions = {
 
     const isTokenVerified = await verifyToken(formData.email as Email, locals.mediaAPIKey.token)
 
+    // this was a test to see if the condition below was causing the error
     if (isTokenVerified) {
-      cookies.set('session_key', locals.mediaAPIKey, {
-        path: '/'      // Optional, ensures the cookie is sent for all paths
+      cookies.set('session_key', JSON.stringify(locals.mediaAPIKey), {
+        path: '/'
       });
     }
 
