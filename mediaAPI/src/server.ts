@@ -6,7 +6,6 @@ import NodeCache from 'node-cache';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 
-
 dotenv.config();
 
 const app = express();
@@ -37,6 +36,9 @@ app.post('/auth/token/get-token', async (req: Request, res: Response) => {
     console.log("Token requested by:", email)
 
     let token: String | Boolean = generateToken(email)
+
+    console.log("token is:", token)
+
 
     res.status(200)
     res.send({ "token": token })

@@ -16,15 +16,13 @@
   });
 
   function handleInput(searchQuery: String | any) {
-    console.log(searchQuery);
-
     clearTimeout(timeout!); // Clear the previous debounce timer
     timeout = setTimeout(() => {
       searchBar(); // Trigger the search
     }, debounceTime);
   }
   async function searchBar() {
-    console.log(data.mediaAPIKey);
+    console.log(data.apiKey);
     // const response = await fetch("/search/search-bar", {
     //   method: "POST",
     //   headers: { "Content-Type": "application/json" },
@@ -34,7 +32,6 @@
     //     value: searchQuery,
     //   }),
     // });
-
     // const result = await response.json();
     // console.log("Server Response:", result);
   }

@@ -36,6 +36,7 @@ app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0
     const email = req.body.email;
     console.log("Token requested by:", email);
     let token = generateToken(email);
+    console.log("token is:", token);
     res.status(200);
     res.send({ "token": token });
 }));
