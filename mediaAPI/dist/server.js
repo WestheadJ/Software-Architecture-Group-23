@@ -61,9 +61,9 @@ app.post('/auth/token/refresh', (req, res) => __awaiter(void 0, void 0, void 0, 
 app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const token = req.body.token;
-    const value = req.body.value;
+    const query = req.body.query;
     try {
-        const result = yield searchBarMediaByTitle(value);
+        const result = yield searchBarMediaByTitle(query);
         res.status(200);
         res.send({ "result": result });
     }
@@ -71,6 +71,20 @@ app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, voi
         console.log(err);
         res.status(401);
         res.send('Not authorized');
+    }
+}));
+app.post('/media/search', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchQuery = req.body.query;
+    console.log(searchQuery);
+    try {
+        const searchResult = yield searchAll(searchQuery);
+        res.status(200);
+        res.send({ "data": searchResult.data, "results": searchResult.results });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(401);
+        res.send({ "error": true, "message": e });
     }
 }));
 app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -143,17 +157,30 @@ function generateToken(email) {
         return token;
     }
 }
-function searchBarMediaByTitle(value) {
+function searchBarMediaByTitle(query) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("168", value);
         const { data, error } = yield supabase
             .from('media')
-            .select('title, authors, genre, media_type').ilike('title', `%${value}%`).range(0, 5);
+            .select('title, authors, genre, media_type').ilike('title', `%${query}%`).range(0, 5);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        return { "success": true, "data": data };
+    });
+}
+function searchAll(query) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, count, error } = yield supabase
+            .from('media')
+            .select('*', { count: 'exact' })
+            .ilike('title', `%${query}%`);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };
         }
         console.log(data);
-        return { "success": true, "data": data };
+        console.log(count);
+        return { "success": true, "data": data, "results": count };
     });
 }

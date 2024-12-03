@@ -17,6 +17,10 @@
 		"src/routes/register/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
+	"/search": [
+		"src/routes/search/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
 	"/search/search-bar": [
 		"src/routes/search/search-bar/+server.ts"
 	]

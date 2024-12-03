@@ -6,11 +6,12 @@
   <div class="hero-content text-center">
     <div class="max-w-md text-white">
       <h1 class="text-5xl font-bold mb-6">AML Library</h1>
-      <p class="py-4 text-lg">Discover a wide range of content.</p>
+      <p class="py-4 text-lg display">Discover a wide range of content.</p>
 
       <div class="relative">
         <SearchBar />
       </div>
+      <a class="btn btn-primary" href="/search">Search</a>
     </div>
   </div>
 </div>

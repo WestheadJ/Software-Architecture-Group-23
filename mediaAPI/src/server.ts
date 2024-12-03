@@ -69,10 +69,10 @@ app.post('/auth/token/refresh', async (req: Request, res: Response) => { });
 app.post('/media/search/search-bar', async (req: Request, res: Response) => {
     const email: Email = req.body.email
     const token: String = req.body.token;
-    const value: String = req.body.value;
+    const query: String = req.body.query;
 
     try {
-        const result = await searchBarMediaByTitle(value)
+        const result = await searchBarMediaByTitle(query)
         res.status(200)
         res.send({ "result": result })
     }
@@ -82,6 +82,30 @@ app.post('/media/search/search-bar', async (req: Request, res: Response) => {
         res.send('Not authorized');
     }
 });
+
+app.post('/media/search', async (req: Request, res: Response) => {
+    const searchQuery: string = req.body.query
+    const page: number = req.body.page;
+    const pageSize: number = 10;
+
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize - 1;
+
+    try {
+        const searchResult = await searchAll(searchQuery, start, end)
+
+        res.status(200)
+        res.send({ "data": searchResult.data, "results": searchResult.results })
+
+    }
+    catch (e) {
+        console.log(e)
+        res.status(401)
+        res.send({ "error": true, "message": e })
+    }
+
+
+})
 
 app.post('/media/search/item', async (req: Request, res: Response) => {
     res.send("there's no such thing");
@@ -164,13 +188,30 @@ function generateToken(email: Email): String | Boolean {
     }
 }
 
-async function searchBarMediaByTitle(value: String) {
+async function searchBarMediaByTitle(query: String) {
     const { data, error } = await supabase
         .from('media')
-        .select('title, authors, genre, media_type').ilike('title', `%${value}%`).range(0, 5);
+        .select('title, authors, genre, media_type').ilike('title', `%${query}%`).range(0, 5);
     if (error) {
         console.log(error)
         return { "success": false, "error": error }
     }
     return { "success": true, "data": data }
 }
+
+async function searchAll(query: string, start: number, end: number) {
+
+    const { data, count, error } = await supabase
+        .from('media')
+        .select('*', { count: 'exact' })
+        .ilike('title', `%${query}%`)
+        .range(start, end)
+    if (error) {
+        console.log(error)
+        return { "success": false, "error": error }
+    }
+    console.log(data)
+    console.log(count)
+    return { "success": true, "data": data, "results": count }
+}
+
