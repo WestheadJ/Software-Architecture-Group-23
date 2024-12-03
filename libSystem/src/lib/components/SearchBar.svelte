@@ -27,9 +27,6 @@
         });
         const result = await response.json();
         searchBarResults = result.data.data;
-        searchBarResults.forEach((element) => {
-            console.log(element);
-        });
     }
 </script>
 
@@ -44,7 +41,7 @@
     <!-- Dropdown -->
     {#if searchBarResults.length > 0 && searchQuery.length > 0}
         <ul
-            class="absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
+            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
         >
             {#each searchBarResults as suggestion}
                 <li
