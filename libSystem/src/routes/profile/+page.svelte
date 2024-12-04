@@ -1,12 +1,13 @@
-<script>
-  import Navbar from "$lib/components/Navbar.svelte";
-  import Card from "$lib/components/Card.svelte";
+<script lang="ts">
+  import Navbar from '$lib/components/Navbar.svelte';
+  import Card from '$lib/components/Card.svelte';
+  export let borrowedBooks: { title: string; description: string; tags: string[] }[];
 </script>
 
-<Navbar/>
+<Navbar />
 
 <div class="w-full h-60 bg-primary flex items-center justify-center relative">
-  <h1 class="text-4xl font-bold text-white">Welcome Back,geef!</h1>
+  <h1 class="text-4xl font-bold text-white">Welcome Back, Geef!</h1>
 
   <div class="absolute bottom-[-4rem]">
     <div class="avatar">
@@ -26,15 +27,20 @@
 </div>
 
 <div class="w-full px-4 mt-10">
-  <h2 class="text-3xl font-semibold text-center mt-5">Reserved Books</h2>
+  <h2 class="text-3xl font-semibold text-center mt-5">Borrowed Books</h2>
   <div class="w-full flex flex-wrap justify-center gap-6 mt-6">
-    <Card mediaTitle="War and Peace" mediaDesc="An example description" tags={['War', 'Non-fiction']} />
-    <Card mediaTitle="War and Peace" mediaDesc="An example description" tags={['Romance', 'Classic']} />
-    <Card mediaTitle="War and Peace" mediaDesc="An example description" tags={['Justice', 'Classic']} />
+    {#each borrowedBooks as book}
+      <Card 
+        mediaTitle={book.title} 
+        mediaDesc={book.description} 
+        tags={book.tags} 
+      />
+    {/each}
   </div>
 </div>
+
 <div class="w-full px-4 mt-10">
-  <h2 class="text-3xl font-semibold text-center mt-5"> books to return</h2>
+  <h2 class="text-3xl font-semibold text-center mt-5">Books to Return</h2>
   <div class="w-full flex flex-wrap justify-center gap-6 mt-6">
     <Card mediaTitle="War and Peace" mediaDesc="An example description" tags={['War', 'Non-fiction']} />
     <Card mediaTitle="War and Peace" mediaDesc="An example description" tags={['Romance', 'Classic']} />
@@ -43,25 +49,24 @@
 </div>
 
 <style>
+  .banner {
+    background-color: #4a90e2;
+    height: 15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
 
-.banner {
-  background-color: #4a90e2;
-  height: 15rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
+  .avatar img {
+    object-fit: cover;
+  }
 
-.avatar img {
-  object-fit: cover;
-}
+  h1 {
+    color: white;
+  }
 
-h1 {
-  color: white;
-}
-
-p {
-  color: #718096;
-}
+  p {
+    color: #718096;
+  }
 </style>
