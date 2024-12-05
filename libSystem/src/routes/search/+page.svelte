@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import Card from "$lib/components/Card.svelte";
 
     // Access data from the `$page` store
     const { resultData, resultsAmount, searchQuery } = $page.data;
@@ -15,11 +16,12 @@
     </div>
     <div>
         {#each resultData as result}
-            <div class="display-column p-3 m-3">
-                <h3>{result.title}</h3>
-                <p>{result.authors}</p>
-                <img src={result.media_image} height="auto" width="200px" />
-            </div>
+            <Card
+                mediaTitle={result.title}
+                mediaAuthors={result.authors}
+                mediaDesc={result.synopsis}
+                imgUrl={result.media_image}
+            />
         {/each}
     </div>
 </div>
