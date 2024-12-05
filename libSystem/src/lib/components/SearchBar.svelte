@@ -1,7 +1,8 @@
 <script lang="ts">
     let searchQuery: string = $state("");
     let searchBarResults = $state<string[]>([]);
-    let focusedInput = $state(false);
+
+    let props: any = $props();
 
     let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
     const debounceTime: number = 500;
@@ -39,7 +40,7 @@
         bind:value={searchQuery}
     />
     <!-- Dropdown -->
-    {#if searchBarResults.length > 0 && searchQuery.length > 0}
+    {#if searchBarResults.length > 0 && searchQuery.length > 0 && !props.isMainSearch}
         <ul
             class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
         >
@@ -54,3 +55,9 @@
         </ul>
     {/if}
 </div>
+
+{#if props.isMainSearch}
+    <div>
+        <a class="btn btn-primary" href="/search?query={searchQuery}">Search</a>
+    </div>
+{/if}

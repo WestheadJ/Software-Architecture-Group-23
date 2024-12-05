@@ -23,5 +23,9 @@
 	],
 	"/search/search-bar": [
 		"src/routes/search/search-bar/+server.ts"
+	],
+	"/search/search-item": [
+		"src/routes/search/search-item/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	]
 }

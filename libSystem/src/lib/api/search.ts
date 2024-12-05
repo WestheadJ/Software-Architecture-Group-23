@@ -13,3 +13,9 @@ export async function fullSearch(value: String) {
     const searchResponseData = await searchResponse.json()
     return searchResponseData
 }
+
+export async function searchMediaItem(mediaTitle: string | null, mediaAuthors: string | null, mediaType: string | null) {
+    const searchResponse = await fetch('http://127.0.0.1:3000/media/search/item', { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "mediaTitle": mediaTitle, "mediaAuthors": mediaAuthors, "mediaType": mediaType }) })
+    const searchResponseData = await searchResponse.json()
+    return searchResponseData
+}

@@ -55,7 +55,7 @@
       <h1>AML Library</h1>
     </a>
     {#if !ignoredPages.includes(currentPageUrl) && data.isAuthenticated}
-      <SearchBar />
+      <SearchBar isMainSearch={false} />
     {/if}
   </div>
   <div class="navbar-end gap-2">

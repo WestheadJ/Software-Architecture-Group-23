@@ -100,7 +100,7 @@ app.post('/media/search', async (req: Request, res: Response) => {
     }
     catch (e) {
         console.log(e)
-        res.status(401)
+        res.status(500)
         res.send({ "error": true, "message": e })
     }
 
@@ -108,6 +108,24 @@ app.post('/media/search', async (req: Request, res: Response) => {
 })
 
 app.post('/media/search/item', async (req: Request, res: Response) => {
+    const mediaTitle: string = req.body.mediaTitle;
+    const mediaAuthors: string = req.body.mediaAuthors;
+    const mediaType: string = req.body.mediaType;
+
+    try {
+
+        const response = await searchItem(mediaTitle, mediaAuthors, mediaType);
+        res.status(200);
+        res.send({ "result": response })
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e })
+    }
+
+
+
     res.send("there's no such thing");
 });
 
@@ -215,3 +233,15 @@ async function searchAll(query: string, start: number, end: number) {
     return { "success": true, "data": data, "results": count }
 }
 
+async function searchItem(mediaTitle: string, mediaAuthors: string, mediaType: string) {
+
+    const { data, error } = await supabase
+        .from('media')
+        .select('*',).eq("title", mediaTitle).eq("media_type", mediaType).eq("authors", mediaAuthors)
+    if (error) {
+        console.log(error)
+        return { "success": false, "error": error }
+    }
+    console.log(data)
+    return { "success": true, "data": data }
+}

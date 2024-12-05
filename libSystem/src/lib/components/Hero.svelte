@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
   import SearchBar from "./SearchBar.svelte";
+  let searchBar: any;
+  let searchQuery: any;
 </script>
 
 <div class="hero bg-black min-h-screen flex items-center justify-center">
@@ -9,9 +11,8 @@
       <p class="py-4 text-lg display">Discover a wide range of content.</p>
 
       <div class="relative">
-        <SearchBar />
+        <SearchBar bind:this={searchBar} isMainSearch={true} />
       </div>
-      <a class="btn btn-primary" href="/search">Search</a>
     </div>
   </div>
 </div>

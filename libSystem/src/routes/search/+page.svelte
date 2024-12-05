@@ -2,8 +2,9 @@
     import { page } from "$app/stores";
     import Card from "$lib/components/Card.svelte";
 
-    // Access data from the `$page` store
     const { resultData, resultsAmount, searchQuery } = $page.data;
+
+    console.log(resultsAmount);
 
     let pages = 1;
 </script>

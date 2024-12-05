@@ -1,4 +1,4 @@
-import type { Email } from '$lib/types/types.js';
+
 import { searchBar } from '$lib/api/search.js'
 
 export async function POST({ request }) {
