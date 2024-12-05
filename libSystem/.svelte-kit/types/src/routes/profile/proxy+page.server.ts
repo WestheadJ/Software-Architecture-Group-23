@@ -15,7 +15,7 @@ export const load = async ({ locals }: Parameters<PageServerLoad>[0]) => {
             user_id,
             media_id,
             borrowed_at,
-            media(title, description, tags)  // Joining media table to get details like title, description, and tags
+            media(title, description, tags)  
         `)
         .eq('user_id', locals.user.id)
         .order('borrowed_at', { ascending: false });
