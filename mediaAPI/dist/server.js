@@ -75,19 +75,35 @@ app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, voi
 }));
 app.post('/media/search', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const searchQuery = req.body.query;
-    console.log(searchQuery);
+    const page = req.body.page;
+    const pageSize = 10;
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize - 1;
     try {
-        const searchResult = yield searchAll(searchQuery);
+        const searchResult = yield searchAll(searchQuery, start, end);
         res.status(200);
         res.send({ "data": searchResult.data, "results": searchResult.results });
     }
     catch (e) {
         console.log(e);
-        res.status(401);
+        res.status(500);
         res.send({ "error": true, "message": e });
     }
 }));
 app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const mediaTitle = req.body.mediaTitle;
+    const mediaAuthors = req.body.mediaAuthors;
+    const mediaType = req.body.mediaType;
+    try {
+        const response = yield searchItem(mediaTitle, mediaAuthors, mediaType);
+        res.status(200);
+        res.send({ "result": response });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
     res.send("there's no such thing");
 }));
 app.get('/media/reservation', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -169,12 +185,12 @@ function searchBarMediaByTitle(query) {
         return { "success": true, "data": data };
     });
 }
-function searchAll(query) {
+function searchAll(query, start, end) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data, count, error } = yield supabase
             .from('media')
             .select('*', { count: 'exact' })
-            .ilike('title', `%${query}%`);
+            .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };
@@ -182,5 +198,18 @@ function searchAll(query) {
         console.log(data);
         console.log(count);
         return { "success": true, "data": data, "results": count };
+    });
+}
+function searchItem(mediaTitle, mediaAuthors, mediaType) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase
+            .from('media')
+            .select('*').eq("title", mediaTitle).eq("media_type", mediaType).eq("authors", mediaAuthors);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        console.log(data);
+        return { "success": true, "data": data };
     });
 }

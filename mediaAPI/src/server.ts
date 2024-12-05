@@ -222,8 +222,8 @@ async function searchAll(query: string, start: number, end: number) {
     const { data, count, error } = await supabase
         .from('media')
         .select('*', { count: 'exact' })
-        .ilike('title', `%${query}%`)
-        .range(start, end)
+        .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`)
+
     if (error) {
         console.log(error)
         return { "success": false, "error": error }
