@@ -2,6 +2,7 @@
   export let mediaTitle: string;
   export let mediaDesc: string;
   export let mediaAuthors: string;
+  export let mediaGenre: string;
   export let tags: string[] = [];
   export let imgUrl: string;
 </script>
@@ -17,6 +18,8 @@
     </h2>
     <h3>Authors:</h3>
     {mediaAuthors}
+    <h4>Genres:</h4>
+    {mediaGenre}
     <p>{mediaDesc}</p>
     <div class="card-actions justify-end justify-center my-1">
       {#each tags as tag}

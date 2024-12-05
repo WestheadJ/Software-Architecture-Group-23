@@ -113,20 +113,16 @@ app.post('/media/search/item', async (req: Request, res: Response) => {
     const mediaType: string = req.body.mediaType;
 
     try {
-
+        console.log("returning")
         const response = await searchItem(mediaTitle, mediaAuthors, mediaType);
         res.status(200);
-        res.send({ "result": response })
+        res.send({ "data": response })
     }
     catch (e) {
         console.log(e);
         res.status(500);
         res.send({ "error": true, "message": e })
     }
-
-
-
-    res.send("there's no such thing");
 });
 
 app.get('/media/reservation', async (_req: Request, res: Response) => {
@@ -207,14 +203,14 @@ function generateToken(email: Email): String | Boolean {
 }
 
 async function searchBarMediaByTitle(query: String) {
-    const { data, error } = await supabase
+    const { data, count, error } = await supabase
         .from('media')
-        .select('title, authors, genre, media_type').ilike('title', `%${query}%`).range(0, 5);
+        .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 5);
     if (error) {
         console.log(error)
         return { "success": false, "error": error }
     }
-    return { "success": true, "data": data }
+    return { "success": true, "data": data, "results": count }
 }
 
 async function searchAll(query: string, start: number, end: number) {

@@ -1,15 +1,17 @@
 <script lang="ts">
     import { page } from "$app/stores";
     const { resultData } = $page.data;
+    console.log(resultData.data);
+    let item = resultData.data[0];
 </script>
 
-<div class="flex display-row">
+<div class="">
     <div>
-        <img src={resultData.media_image} alt={resultData.title} />
+        <img src={item.media_image} alt={item.title} />
     </div>
-    <div class="flex display-col">
-        <h1>{resultData.title}</h1>
-        <p>{resultData.authors}</p>
+    <div class="">
+        <h1>{item.title}</h1>
+        <p>{item.authors}</p>
     </div>
-    <div>{resultData.synopsis}</div>
+    <div>{item.synopsis}</div>
 </div>

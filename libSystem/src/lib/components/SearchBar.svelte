@@ -1,11 +1,13 @@
 <script lang="ts">
     let searchQuery: string = $state("");
-    let searchBarResults = $state<string[]>([]);
+    let searchBarResults = $state<any[]>([]);
 
     let props: any = $props();
 
     let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
     const debounceTime: number = 500;
+
+    let results = $state(0);
 
     $effect(() => {
         handleInput(searchQuery);
@@ -27,6 +29,8 @@
             body: JSON.stringify({ value: searchQuery }),
         });
         const result = await response.json();
+
+        results = result.data.results;
         searchBarResults = result.data.data;
     }
 </script>
@@ -42,16 +46,21 @@
     <!-- Dropdown -->
     {#if searchBarResults.length > 0 && searchQuery.length > 0 && !props.isMainSearch}
         <ul
-            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-40 overflow-auto"
+            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-auto overflow-auto"
         >
             {#each searchBarResults as suggestion}
-                <li
-                    class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onclick={() => console.log(suggestion)}
+                <a
+                    href="/search/search-item?mediaTitle={suggestion.title}&mediaAuthors={suggestion.authors}&mediaType={suggestion.media_type}"
                 >
-                    {suggestion.media_type} | {suggestion.title}
-                </li>
+                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        {suggestion.media_type} | {suggestion.title} | {suggestion.authors}
+                        | {suggestion.genre}
+                    </li>
+                </a>
             {/each}
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                View all {results} results...
+            </li>
         </ul>
     {/if}
 </div>

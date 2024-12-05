@@ -95,16 +95,16 @@ app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, f
     const mediaAuthors = req.body.mediaAuthors;
     const mediaType = req.body.mediaType;
     try {
+        console.log("returning");
         const response = yield searchItem(mediaTitle, mediaAuthors, mediaType);
         res.status(200);
-        res.send({ "result": response });
+        res.send({ "data": response });
     }
     catch (e) {
         console.log(e);
         res.status(500);
         res.send({ "error": true, "message": e });
     }
-    res.send("there's no such thing");
 }));
 app.get('/media/reservation', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('There are no current reservations');
@@ -175,14 +175,14 @@ function generateToken(email) {
 }
 function searchBarMediaByTitle(query) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { data, error } = yield supabase
+        const { data, count, error } = yield supabase
             .from('media')
-            .select('title, authors, genre, media_type').ilike('title', `%${query}%`).range(0, 5);
+            .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 5);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };
         }
-        return { "success": true, "data": data };
+        return { "success": true, "data": data, "results": count };
     });
 }
 function searchAll(query, start, end) {

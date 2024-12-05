@@ -3,10 +3,6 @@
     import Card from "$lib/components/Card.svelte";
 
     const { resultData, resultsAmount, searchQuery } = $page.data;
-
-    console.log(resultsAmount);
-
-    let pages = 1;
 </script>
 
 <div class="container mx-auto p-4">
@@ -21,6 +17,7 @@
                 mediaTitle={result.title}
                 mediaAuthors={result.authors}
                 mediaDesc={result.synopsis}
+                mediaGenre={result.genre}
                 imgUrl={result.media_image}
             />
         {/each}
