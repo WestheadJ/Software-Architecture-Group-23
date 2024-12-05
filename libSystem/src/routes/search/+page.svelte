@@ -18,6 +18,7 @@
                 mediaAuthors={result.authors}
                 mediaDesc={result.synopsis}
                 mediaGenre={result.genre}
+                mediaType={result.media_type}
                 imgUrl={result.media_image}
             />
         {/each}

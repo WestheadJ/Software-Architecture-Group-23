@@ -3,6 +3,7 @@
   export let mediaDesc: string;
   export let mediaAuthors: string;
   export let mediaGenre: string;
+  export let mediaType: string;
   export let tags: string[] = [];
   export let imgUrl: string;
 </script>
@@ -26,6 +27,9 @@
         <div class="badge badge-outline">{tag}</div>
       {/each}
     </div>
-    <button class="btn btn-primary hover:scale-105">View</button>
+    <a
+      href="/search/search-item?mediaTitle={mediaTitle}&mediaAuthors={mediaAuthors}&mediaType={mediaType}"
+      class="btn btn-primary hover:scale-105">View</a
+    >
   </div>
 </div>
