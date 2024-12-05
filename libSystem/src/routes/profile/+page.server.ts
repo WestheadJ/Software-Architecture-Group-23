@@ -1,7 +1,7 @@
 import { supabase } from '$lib/supabase';
 import type { Actions, PageServerLoad } from './$types';
 
-// Fetch borrowed books for the user
+
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.user) {
         return { borrowedBooks: [] };
@@ -13,7 +13,8 @@ export const load: PageServerLoad = async ({ locals }) => {
             id,
             user_id,
             media_id,
-            borrowed_at
+            borrowed_at,
+            media(title, description, tags)  // Joining media table to get details like title, description, and tags
         `)
         .eq('user_id', locals.user.id)
         .order('borrowed_at', { ascending: false });
@@ -26,7 +27,7 @@ export const load: PageServerLoad = async ({ locals }) => {
     return { borrowedBooks };
 };
 
-// Handle returning a book
+
 export const actions: Actions = {
     returnBook: async ({ request }) => {
         const formData = await request.formData();
@@ -36,7 +37,7 @@ export const actions: Actions = {
             return { success: false, message: 'Invalid borrowed ID' };
         }
 
-        // Delete the borrowed record from the database
+       
         const { error } = await supabase
             .from('borrowed')
             .delete()
