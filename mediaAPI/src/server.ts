@@ -85,14 +85,12 @@ app.post('/media/search/search-bar', async (req: Request, res: Response) => {
 
 app.post('/media/search', async (req: Request, res: Response) => {
     const searchQuery: string = req.body.query
-    const page: number = req.body.page;
-    const pageSize: number = 10;
-
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize - 1;
+    const from: number = req.body.from;
+    const to: number = req.body.to
+    console.log(from)
 
     try {
-        const searchResult = await searchAll(searchQuery, start, end)
+        const searchResult = await searchAll(searchQuery, from, to)
 
         res.status(200)
         res.send({ "data": searchResult.data, "results": searchResult.results })
@@ -218,14 +216,13 @@ async function searchAll(query: string, start: number, end: number) {
     const { data, count, error } = await supabase
         .from('media')
         .select('*', { count: 'exact' })
-        .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`)
+        .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(start, end)
 
     if (error) {
         console.log(error)
         return { "success": false, "error": error }
     }
-    console.log(data)
-    console.log(count)
+
     return { "success": true, "data": data, "results": count }
 }
 

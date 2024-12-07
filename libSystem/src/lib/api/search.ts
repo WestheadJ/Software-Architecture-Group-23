@@ -7,9 +7,9 @@ export async function searchBar(value: String) {
     return searchResponseData
 }
 
-export async function fullSearch(value: String) {
+export async function fullSearch(query: String, from: number, to: number) {
 
-    const searchResponse = await fetch('http://127.0.0.1:3000/media/search', { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "query": value }) })
+    const searchResponse = await fetch('http://127.0.0.1:3000/media/search', { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "query": query, "from": from, "to": to }) })
     const searchResponseData = await searchResponse.json()
     return searchResponseData
 }

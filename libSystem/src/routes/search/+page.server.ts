@@ -10,21 +10,28 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
     // Check for the search parameter
     const searchQuery = url.searchParams.get('query');
-    const page = url.searchParams.get('page')
+    let from: any = url.searchParams.get('from') || 1
+    let to: any = url.searchParams.get("to") || 10
+
+    from = parseInt(from) - 1
+    to = parseInt(to) - 1
+
+    console.log("From and to", from, to)
+
     if (!searchQuery || searchQuery.trim() === '') {
         throw redirect(302, '/'); // Redirect with an error
     }
 
-    const results = await fullSearch(searchQuery)
+    const results = await fullSearch(searchQuery, from, to)
 
-    const resultData = results.data
-    const resultsAmount = results.results
+    const resultData: any[] = results.data
+    const resultsAmount: number = results.results
 
     // Return data to the page if checks pass
     return {
         isAuthenticated: locals.pb.authStore.isValid,
-        resultData,
-        resultsAmount,
+        searchBarResults: resultData,
+        queryResultsAmount: resultsAmount,
         searchQuery
     };
 };

@@ -75,12 +75,11 @@ app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, voi
 }));
 app.post('/media/search', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const searchQuery = req.body.query;
-    const page = req.body.page;
-    const pageSize = 10;
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize - 1;
+    const from = req.body.from;
+    const to = req.body.to;
+    console.log(from);
     try {
-        const searchResult = yield searchAll(searchQuery, start, end);
+        const searchResult = yield searchAll(searchQuery, from, to);
         res.status(200);
         res.send({ "data": searchResult.data, "results": searchResult.results });
     }
@@ -190,13 +189,11 @@ function searchAll(query, start, end) {
         const { data, count, error } = yield supabase
             .from('media')
             .select('*', { count: 'exact' })
-            .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`);
+            .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(start, end);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };
         }
-        console.log(data);
-        console.log(count);
         return { "success": true, "data": data, "results": count };
     });
 }

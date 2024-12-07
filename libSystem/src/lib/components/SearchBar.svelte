@@ -1,13 +1,18 @@
 <script lang="ts">
-    let searchQuery: string = $state("");
-    let searchBarResults = $state<any[]>([]);
-
+    // Get what is passed in through the props store as export let doesn't work neither does export const...
     let props: any = $props();
 
+    // Debouncing search bar results setup
     let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
     const debounceTime: number = 500;
 
-    let results = $state(0);
+    let queryResultsAmount = $state(0); // queryResultsAmount is a variable that changes state
+    let currentPage = $state(1); //set the current page as 1
+    let totalPages = $state(1); // the amount of pages, default is 1
+    let pageSize = $state(10); // limit the amount of results default is 1
+    let pageNumbers = $state([]);
+    let searchQuery: string = $state("");
+    let searchBarResults = $state<any[]>([]);
 
     $effect(() => {
         handleInput(searchQuery);
@@ -30,7 +35,7 @@
         });
         const result = await response.json();
 
-        results = result.data.results;
+        queryResultsAmount = result.data.results;
         searchBarResults = result.data.data;
     }
 </script>
@@ -59,7 +64,7 @@
                 </a>
             {/each}
             <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                View all {results} results...
+                View all {queryResultsAmount} results...
             </li>
         </ul>
     {/if}
