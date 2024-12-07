@@ -105,17 +105,20 @@
         </button>
     </div>
 
-    <div>
-        {#each searchBarResults as result, i}
-            {i + 1}
-            <Card
-                mediaTitle={result.title}
-                mediaAuthors={result.authors}
-                mediaDesc={result.synopsis}
-                mediaGenre={result.genre}
-                mediaType={result.media_type}
-                imgUrl={result.media_image}
-            />
-        {/each}
+    <div class="min-h-screen flex justify-center">
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 xxl:grid-cols-4 gap-4 w-full max-w-screen-2xl p-6"
+        >
+            {#each searchBarResults as result, i}
+                <Card
+                    mediaTitle={result.title}
+                    mediaAuthors={result.authors}
+                    mediaDesc={result.synopsis}
+                    mediaGenre={result.genre}
+                    mediaType={result.media_type}
+                    imgUrl={result.media_image}
+                />
+            {/each}
+        </div>
     </div>
 </div>

@@ -8,9 +8,9 @@
   export let imgUrl: string;
 </script>
 
-<div class="card bg-base-100 w-96 shadow-xl m-10 max-h-[30rem]">
+<div class="card bg-base-100 shadow-xl m-6 max-h-[40rem] flex flex-col">
   <figure>
-    <img src={imgUrl} alt={mediaTitle} />
+    <img class="w-full h-48 object-cover" src={imgUrl} alt={mediaTitle} />
   </figure>
   <div class="card-body">
     <h2 class="card-title">
@@ -22,14 +22,16 @@
     <h4>Genres:</h4>
     {mediaGenre}
     <p>{mediaDesc}</p>
-    <div class="card-actions justify-end justify-center my-1">
+    <div class="card-actions justify-center my-1">
       {#each tags as tag}
         <div class="badge badge-outline">{tag}</div>
       {/each}
     </div>
     <a
       href="/search/search-item?mediaTitle={mediaTitle}&mediaAuthors={mediaAuthors}&mediaType={mediaType}"
-      class="btn btn-primary hover:scale-105">View</a
+      class="btn btn-primary hover:scale-105"
     >
+      View
+    </a>
   </div>
 </div>
