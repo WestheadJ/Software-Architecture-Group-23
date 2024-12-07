@@ -65,60 +65,55 @@
     };
 </script>
 
-<div class="container mx-auto p-4">
-    <!-- Render your page content here -->
-    <div class="mt-4">
-        <p>Your custom content goes here...</p>
-        <p class="mt-2">Showing Results For: <strong>{searchQuery}</strong></p>
-    </div>
+<div class="pt-16 h-full">
+    <h1 class="text-3xl">
+        Showing Results For: <strong><u>{searchQuery}</u></strong>
+    </h1>
 
-    <!-- Pagination controls -->
-    <div>
-        <!-- Previous page button -->
+    <!-- Previous page button -->
+    <button
+        onclick={() => {
+            console.log(goToPreviousPage);
+        }}
+        disabled={currentPage === 1}
+    >
+        &laquo; Prev
+    </button>
+
+    <!-- Page number buttons -->
+    {#each pageNumbers as page}
         <button
-            onclick={() => {
-                console.log(goToPreviousPage);
-            }}
-            disabled={currentPage === 1}
+            onclick={() => goToPage(page)}
+            class={page === currentPage ? "active" : ""}
         >
-            &laquo; Prev
+            {page}
         </button>
+    {/each}
 
-        <!-- Page number buttons -->
-        {#each pageNumbers as page}
-            <button
-                onclick={() => goToPage(page)}
-                class={page === currentPage ? "active" : ""}
-            >
-                {page}
-            </button>
+    <!-- Next page button -->
+    <button
+        onclick={() => {
+            goToNextPage;
+        }}
+        disabled={currentPage === totalPages}
+    >
+        Next &raquo;
+    </button>
+</div>
+
+<div class="min-h-screen flex justify-center">
+    <div
+        class="grid grid-cols-1 md:grid-cols-2 xxl:grid-cols-4 gap-4 w-full max-w-screen-2xl p-6"
+    >
+        {#each searchBarResults as result, i}
+            <Card
+                mediaTitle={result.title}
+                mediaAuthors={result.authors}
+                mediaDesc={result.synopsis}
+                mediaGenre={result.genre}
+                mediaType={result.media_type}
+                imgUrl={result.media_image}
+            />
         {/each}
-
-        <!-- Next page button -->
-        <button
-            onclick={() => {
-                goToNextPage;
-            }}
-            disabled={currentPage === totalPages}
-        >
-            Next &raquo;
-        </button>
-    </div>
-
-    <div class="min-h-screen flex justify-center">
-        <div
-            class="grid grid-cols-1 md:grid-cols-2 xxl:grid-cols-4 gap-4 w-full max-w-screen-2xl p-6"
-        >
-            {#each searchBarResults as result, i}
-                <Card
-                    mediaTitle={result.title}
-                    mediaAuthors={result.authors}
-                    mediaDesc={result.synopsis}
-                    mediaGenre={result.genre}
-                    mediaType={result.media_type}
-                    imgUrl={result.media_image}
-                />
-            {/each}
-        </div>
     </div>
 </div>
