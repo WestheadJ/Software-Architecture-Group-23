@@ -16,16 +16,16 @@
       const response = await fetch('/api/renew-book', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookId, userId: 'currentUserId' }), // Use dynamic userId
+          body: JSON.stringify({ bookId, userId: 'currentUserId' }), 
       });
 
       const data = await response.json();
       if (data.success) {
           notification = { message: 'Book renewed successfully!', type: 'success' };
-          setTimeout(() => (notification = null), 3000); // Auto-hide after 3 seconds
+          setTimeout(() => (notification = null), 3000); 
       } else {
           notification = { message: 'Failed to renew book: ' + data.message, type: 'error' };
-          setTimeout(() => (notification = null), 3000); // Auto-hide after 3 seconds
+          setTimeout(() => (notification = null), 3000); 
       }
   }
 
@@ -33,16 +33,16 @@
       const response = await fetch('/api/return-book', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookId, userId: 'currentUserId' }), // Use dynamic userId
+          body: JSON.stringify({ bookId, userId: 'currentUserId' }), 
       });
 
       const data = await response.json();
       if (data.success) {
           notification = { message: 'Book returned successfully!', type: 'success' };
-          setTimeout(() => (notification = null), 3000); // Auto-hide after 3 seconds
+          setTimeout(() => (notification = null), 3000); 
       } else {
           notification = { message: 'Failed to return book: ' + data.message, type: 'error' };
-          setTimeout(() => (notification = null), 3000); // Auto-hide after 3 seconds
+          setTimeout(() => (notification = null), 3000); 
       }
   }
 </script>

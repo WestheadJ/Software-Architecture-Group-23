@@ -5,10 +5,10 @@ import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals }: Parameters<PageServerLoad>[0]) => {
     if (!locals.user) {
-        throw redirect(303, '/login'); // Redirect to login if not authenticated
+        throw redirect(303, '/login'); 
     }
 
-    const userId = locals.user.id; // Dynamically fetch authenticated user's ID
+    const userId = locals.user.id; 
 
     const { data: borrowedBooks, error } = await supabase
         .from('borrowed')
@@ -29,5 +29,5 @@ export const load = async ({ locals }: Parameters<PageServerLoad>[0]) => {
         return { borrowedBooks: [] };
     }
 
-    return { borrowedBooks }; // Pass borrowed books to the frontend
+    return { borrowedBooks }; 
 };
