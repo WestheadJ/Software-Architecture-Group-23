@@ -7,10 +7,6 @@
     const debounceTime: number = 500;
 
     let queryResultsAmount = $state(0); // queryResultsAmount is a variable that changes state
-    let currentPage = $state(1); //set the current page as 1
-    let totalPages = $state(1); // the amount of pages, default is 1
-    let pageSize = $state(10); // limit the amount of results default is 1
-    let pageNumbers = $state([]);
     let searchQuery: string = $state("");
     let searchBarResults = $state<any[]>([]);
 
@@ -56,6 +52,7 @@
             {#each searchBarResults as suggestion}
                 <a
                     href="/search/search-item?mediaTitle={suggestion.title}&mediaAuthors={suggestion.authors}&mediaType={suggestion.media_type}"
+                    onclick={() => (searchBarResults = [])}
                 >
                     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                         {suggestion.media_type} | {suggestion.title} | {suggestion.authors}
@@ -63,9 +60,14 @@
                     </li>
                 </a>
             {/each}
-            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                View all {queryResultsAmount} results...
-            </li>
+            <a
+                href="/search?query={searchQuery}"
+                onclick={() => (searchBarResults = [])}
+            >
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                    View all {queryResultsAmount} results...
+                </li>
+            </a>
         </ul>
     {/if}
 </div>

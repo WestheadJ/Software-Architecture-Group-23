@@ -17,16 +17,6 @@
 
     totalPages = Math.ceil(queryResultsAmount / pageSize);
 
-    const getQueryParams = () => {
-        const params = new URLSearchParams(window.location.search);
-
-        // Extract the search query and range (from parameter)
-        const from = parseInt(params.get("from") || "0");
-
-        // Calculate the current page from the "from" parameter
-        currentPage = Math.floor(from / pageSize) + 1;
-    };
-
     if (totalPages <= 3) {
         // If 3 or fewer pages, show all
         pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -63,6 +53,9 @@
     const goToPreviousPage = () => {
         if (currentPage > 1) goToPage(currentPage - 1);
     };
+
+    console.log("Page numbers:", pageNumbers);
+    console.log("Amount of pages:", totalPages);
 </script>
 
 <div class="pt-16 h-full">
@@ -75,7 +68,6 @@
         onclick={() => {
             console.log(goToPreviousPage);
         }}
-        disabled={currentPage === 1}
     >
         &laquo; Prev
     </button>
