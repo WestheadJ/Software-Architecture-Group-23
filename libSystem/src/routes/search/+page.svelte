@@ -49,7 +49,6 @@
 
     // Navigate to the next page
     const goToNextPage = () => {
-        console.log("next page");
         if (currentPage < totalPages) goToPage((currentPage += 1));
         else {
             currentPage = 1;
@@ -59,7 +58,6 @@
 
     // Navigate to the previous page
     const goToPreviousPage = () => {
-        console.log("Previous page");
         if (currentPage > 1) {
             goToPage((currentPage -= 1));
         } else {
@@ -67,8 +65,6 @@
             goToPage(currentPage);
         }
     };
-
-    console.log(currentPage, from / pageSize + 1, pageSize);
 </script>
 
 <div class="pt-16 h-full">
