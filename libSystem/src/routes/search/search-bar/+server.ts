@@ -8,7 +8,6 @@ export async function POST({ request }) {
 
     const searchResult = await searchBar(value)
 
-    console.log(searchResult.result)
 
     return new Response(JSON.stringify({ success: true, data: searchResult.result }), {
         headers: { 'Content-Type': 'application/json' }

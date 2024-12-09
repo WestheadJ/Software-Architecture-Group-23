@@ -21,7 +21,6 @@ export const load = async ({ locals, url }: Parameters<PageServerLoad>[0]) => {
     const results = await searchMediaItem(mediaTitle, mediaAuthors, mediaType);
 
     const resultData = results.data
-    console.log(resultData.data[0])
 
     // Return data to the page if checks pass
     return {

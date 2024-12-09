@@ -1,7 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
     const { resultData } = $page.data;
-    console.log(resultData.data);
     let item = resultData.data[0];
 </script>
 

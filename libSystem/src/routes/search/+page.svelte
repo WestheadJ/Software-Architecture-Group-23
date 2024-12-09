@@ -53,9 +53,6 @@
     const goToPreviousPage = () => {
         if (currentPage > 1) goToPage(currentPage - 1);
     };
-
-    console.log("Page numbers:", pageNumbers);
-    console.log("Amount of pages:", totalPages);
 </script>
 
 <div class="pt-16 h-full">
@@ -64,13 +61,7 @@
     </h1>
 
     <!-- Previous page button -->
-    <button
-        onclick={() => {
-            console.log(goToPreviousPage);
-        }}
-    >
-        &laquo; Prev
-    </button>
+    <button onclick={goToPreviousPage}> &laquo; Prev </button>
 
     <!-- Page number buttons -->
     {#each pageNumbers as page}
@@ -83,12 +74,7 @@
     {/each}
 
     <!-- Next page button -->
-    <button
-        onclick={() => {
-            goToNextPage;
-        }}
-        disabled={currentPage === totalPages}
-    >
+    <button onclick={goToNextPage} disabled={currentPage === totalPages}>
         Next &raquo;
     </button>
 </div>

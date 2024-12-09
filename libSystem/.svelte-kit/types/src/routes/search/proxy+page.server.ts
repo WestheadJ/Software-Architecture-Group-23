@@ -17,7 +17,6 @@ export const load = async ({ locals, url }: Parameters<PageServerLoad>[0]) => {
     from = parseInt(from) - 1
     to = parseInt(to) - 1
 
-    console.log("From and to", from, to)
 
     if (!searchQuery || searchQuery.trim() === '') {
         throw redirect(302, '/'); // Redirect with an error
