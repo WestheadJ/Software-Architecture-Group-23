@@ -95,7 +95,7 @@
 
 <div class="min-h-screen flex justify-center">
     <div
-        class="grid grid-cols-1 md:grid-cols-2 xxl:grid-cols-4 gap-4 w-full max-w-screen-2xl p-6"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full max-w-screen-2xl p-6"
     >
         {#each searchBarResults as result, i}
             <Card
