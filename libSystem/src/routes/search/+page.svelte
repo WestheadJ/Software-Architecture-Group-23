@@ -15,6 +15,13 @@
     let pageSize = $state(10); // limit the amount of results default is 1
     let pageNumbers: any[] = $state([]);
 
+    let from: any = $page.url.searchParams.get("from");
+
+    currentPage = from / pageSize + 1;
+
+    // from = (page - 1) * pageSize;
+    // to = from + pageSize - 1;
+
     totalPages = Math.ceil(queryResultsAmount / pageSize);
 
     if (totalPages <= 3) {
@@ -22,11 +29,7 @@
         pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
     } else {
         // If more than 3 pages, show dynamic pagination
-        const neighbors = [
-            currentPage - 1,
-            currentPage,
-            currentPage + 1,
-        ].filter(
+        let neighbors = [currentPage - 1, currentPage, currentPage + 1].filter(
             (page) => page > 1 && page < totalPages, // Only include valid page numbers
         );
 
@@ -41,18 +44,31 @@
         const to = from + pageSize - 1;
 
         // Redirect to the search page with updated query parameters
-        window.location.href = `/search?query=${searchQuery}&from=${from}&to=${to}`;
+        window.location.href = `/search?query=${searchQuery}&from=${from}&to=${to}&page=${currentPage}`;
     };
 
     // Navigate to the next page
     const goToNextPage = () => {
-        if (currentPage < totalPages) goToPage(currentPage + 1);
+        console.log("next page");
+        if (currentPage < totalPages) goToPage((currentPage += 1));
+        else {
+            currentPage = 1;
+            goToPage(currentPage);
+        }
     };
 
     // Navigate to the previous page
     const goToPreviousPage = () => {
-        if (currentPage > 1) goToPage(currentPage - 1);
+        console.log("Previous page");
+        if (currentPage > 1) {
+            goToPage((currentPage -= 1));
+        } else {
+            currentPage = totalPages;
+            goToPage(currentPage);
+        }
     };
+
+    console.log(currentPage, from / pageSize + 1, pageSize);
 </script>
 
 <div class="pt-16 h-full">
@@ -65,18 +81,19 @@
 
     <!-- Page number buttons -->
     {#each pageNumbers as page}
-        <button
-            onclick={() => goToPage(page)}
-            class={page === currentPage ? "active" : ""}
-        >
-            {page}
-        </button>
+        {#if page === currentPage}
+            <button onclick={() => goToPage(page)}>
+                <u>{page}</u>
+            </button>
+        {:else}
+            <button onclick={() => goToPage(page)}>
+                {page}
+            </button>
+        {/if}
     {/each}
 
     <!-- Next page button -->
-    <button onclick={goToNextPage} disabled={currentPage === totalPages}>
-        Next &raquo;
-    </button>
+    <button onclick={goToNextPage}> Next &raquo; </button>
 </div>
 
 <div class="min-h-screen flex justify-center">

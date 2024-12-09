@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   import Navbar from "$lib/components/Navbar.svelte";
   import Card from "$lib/components/Card.svelte";
 </script>
@@ -64,4 +64,4 @@ h1 {
 p {
   color: #718096;
 }
-</style>
+</style> -->

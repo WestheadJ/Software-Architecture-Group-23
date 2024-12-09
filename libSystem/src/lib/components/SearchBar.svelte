@@ -1,23 +1,34 @@
 <script lang="ts">
-    // Get what is passed in through the props store as export let doesn't work neither does export const...
+    // Props passed in
     let props: any = $props();
 
-    // Debouncing search bar results setup
-    let timeout: NodeJS.Timeout | null = null; // Timer for debouncing
-    const debounceTime: number = 500;
+    // Debouncing setup
+    let timeout: NodeJS.Timeout | null = null;
+    const debounceTime = 500;
 
-    let queryResultsAmount = $state(0); // queryResultsAmount is a variable that changes state
-    let searchQuery: string = $state("");
+    // Reactive state variables
+    let queryResultsAmount = $state(0);
+    let searchQuery = $state("");
     let searchBarResults = $state<any[]>([]);
+    let displayDropdown = $state(false);
+    let isInputFocused = $state(false);
 
     $effect(() => {
         handleInput(searchQuery);
     });
 
-    function handleInput(searchQuery: String | any) {
+    function dropdownActive(): boolean {
+        return (
+            searchBarResults.length > 0 &&
+            searchQuery.length > 0 &&
+            !props.isMainSearch
+        );
+    }
+
+    function handleInput(query: string) {
         clearTimeout(timeout!);
         timeout = setTimeout(() => {
-            if (searchQuery.length != 0) {
+            if (query.length !== 0) {
                 searchBar();
             }
         }, debounceTime);
@@ -34,20 +45,38 @@
         queryResultsAmount = result.data.results;
         searchBarResults = result.data.data;
     }
+
+    // Clear input field
+    function clearSearch() {
+        searchQuery = "";
+        searchBarResults = [];
+    }
 </script>
 
-<div class="form-control w-full max-w-sm">
+<!-- Search Bar -->
+<div class="form-control w-full max-w-sm relative">
     <input
         type="text"
         placeholder="Search media?"
-        class="input input-bordered rounded-full px-4"
+        class="input input-bordered rounded-full px-4 pr-10"
         aria-label="Search"
         bind:value={searchQuery}
     />
+    <!-- Clear Button -->
+    <!-- {#if searchQuery.length > 0}
+        <button
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+            onclick={clearSearch}
+            aria-label="Clear search"
+        >
+            ✕
+        </button>
+    {/if} -->
+
     <!-- Dropdown -->
-    {#if searchBarResults.length > 0 && searchQuery.length > 0 && !props.isMainSearch}
+    {#if dropdownActive()}
         <ul
-            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-auto overflow-auto"
+            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-60 overflow-auto w-full"
         >
             {#each searchBarResults as suggestion}
                 <a
@@ -70,10 +99,12 @@
             </a>
         </ul>
     {/if}
-</div>
 
-{#if props.isMainSearch}
-    <div>
-        <a class="btn btn-primary" href="/search?query={searchQuery}">Search</a>
-    </div>
-{/if}
+    {#if props.isMainSearch}
+        <div>
+            <a class="btn btn-primary" href="/search?query={searchQuery}"
+                >Search</a
+            >
+        </div>
+    {/if}
+</div>
