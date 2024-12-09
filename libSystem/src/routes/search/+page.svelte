@@ -77,23 +77,36 @@
     </h1>
 
     <!-- Previous page button -->
-    <button onclick={goToPreviousPage}> &laquo; Prev </button>
+    <button
+        class="hover:text-xl hover:text-purple-300"
+        onclick={goToPreviousPage}
+    >
+        &laquo; Prev
+    </button>
 
     <!-- Page number buttons -->
     {#each pageNumbers as page}
         {#if page === currentPage}
-            <button onclick={() => goToPage(page)}>
+            <button
+                class="p-2 text-violet-400 hover:text-xl hover:text-purple-300"
+                onclick={() => goToPage(page)}
+            >
                 <u>{page}</u>
             </button>
         {:else}
-            <button onclick={() => goToPage(page)}>
+            <button
+                class="p-1 hover:text-xl hover:text-purple-300"
+                onclick={() => goToPage(page)}
+            >
                 {page}
             </button>
         {/if}
     {/each}
 
     <!-- Next page button -->
-    <button onclick={goToNextPage}> Next &raquo; </button>
+    <button class="hover:text-xl hover:text-purple-300" onclick={goToNextPage}>
+        Next &raquo;
+    </button>
 </div>
 
 <div class="min-h-screen flex justify-center">
