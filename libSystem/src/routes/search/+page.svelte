@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import Card from "$lib/components/Card.svelte";
+    import FilterCollapsable from "$lib/components/FilterCollapsable.svelte";
     import PageButton from "$lib/components/PageButton.svelte";
 
     let searchQuery: string = $state("");
@@ -16,19 +17,23 @@
     let pageSize = Number($page.url.searchParams.get("pageSize")) || 10; // Default to 10 // limit the amount of results default is 1
     let pageNumbers: any[] = $state([]);
 
-    let authorsFilter: any[] = $state([]);
-    let genreFilter: any[] = $state([]);
-
     let selectedAuthors: string[] = $state([]);
     let selectedGenres: string[] = $state([]);
+    let selectedMediaType: string[] = $state([]);
 
     let isAuthorsFilterOpen = $state(false);
     let isGenreFilterOpen = $state(false);
+    let isMediaTypeFilterOpen = $state(false);
 
-    console.log(searchBarResults);
-
-    authorsFilter = [...new Set(searchBarResults.map((item) => item.authors))];
-    genreFilter = [...new Set(searchBarResults.map((item) => item.genre))];
+    let authorsFilter = $state([
+        ...new Set(searchBarResults.map((item) => item.authors)),
+    ]);
+    let genreFilter = $state([
+        ...new Set(searchBarResults.map((item) => item.genre)),
+    ]);
+    let mediaTypeFilter = $state([
+        ...new Set(searchBarResults.map((item) => item.media_type)),
+    ]);
 
     let from: any = $page.url.searchParams.get("from");
 
@@ -147,47 +152,24 @@
 
         <!-- Filter -->
         <div class="w-[25%] border-l-gray-600 border-l-2 flex flex-col">
-            <a
-                onclick={() => {
-                    if (isAuthorsFilterOpen) {
-                        isAuthorsFilterOpen = false;
-                    } else isAuthorsFilterOpen = true;
-                }}>Authors:</a
-            >
-            {#if isAuthorsFilterOpen}
-                <div class=" flex flex-col text-left p-3">
-                    {#each authorsFilter as author}
-                        <label
-                            ><input
-                                type="checkbox"
-                                value={author}
-                                bind:group={selectedAuthors}
-                            />{author}</label
-                        >
-                    {/each}
-                </div>
-            {/if}
-            <a
-                onclick={() => {
-                    if (isGenreFilterOpen) {
-                        isGenreFilterOpen = false;
-                    } else isGenreFilterOpen = true;
-                }}>Genre:</a
-            >
-            {#if isGenreFilterOpen}
-                <div class=" flex flex-col text-left p-3">
-                    {#each genreFilter as genre}
-                        <label
-                            ><input
-                                type="checkbox"
-                                class="checkbox checkbox-primary"
-                                value={genre}
-                                bind:group={selectedGenres}
-                            />{genre}</label
-                        >
-                    {/each}
-                </div>
-            {/if}
+            <FilterCollapsable
+                title="Authors"
+                isFilterOpen={isAuthorsFilterOpen}
+                filter={authorsFilter}
+                bind:bindGroup={selectedAuthors}
+            />
+            <FilterCollapsable
+                title="Genre"
+                isFilterOpen={isGenreFilterOpen}
+                filter={genreFilter}
+                bind:bindGroup={selectedGenres}
+            />
+            <FilterCollapsable
+                title="Media Type"
+                isFilterOpen={isMediaTypeFilterOpen}
+                filter={mediaTypeFilter}
+                bind:bindGroup={selectedMediaType}
+            />
         </div>
     </section>
 </div>
