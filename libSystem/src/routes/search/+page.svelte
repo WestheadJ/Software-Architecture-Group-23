@@ -16,12 +16,16 @@
     let pageSize = Number($page.url.searchParams.get("pageSize")) || 10; // Default to 10 // limit the amount of results default is 1
     let pageNumbers: any[] = $state([]);
     let authorsFilter: any[];
-    let categoriesFilter: string[];
+    let genreFilter: any[];
     let selectedAuthors: string[] = $state([]);
 
     let isAuthorsFilterOpen = $state(false);
+    let isGenreFilterOpen = $state(false);
+
+    console.log(searchBarResults);
 
     authorsFilter = [...new Set(searchBarResults.map((item) => item.authors))];
+    genreFilter = [...new Set(searchBarResults.map((item) => item.genre))];
 
     let from: any = $page.url.searchParams.get("from");
 
@@ -148,11 +152,20 @@
                     {/each}
                 </div>
             {/if}
-            <div>
-                Category:
-                <p>1</p>
-                <p>2</p>
-            </div>
+            <a
+                onclick={() => {
+                    if (isGenreFilterOpen) {
+                        isGenreFilterOpen = false;
+                    } else isGenreFilterOpen = true;
+                }}>genre:</a
+            >
+            {#if isGenreFilterOpen}
+                <div class=" flex flex-col text-left p-3">
+                    {#each genreFilter as genre}
+                        <label><input type="checkbox" />{genre}</label>
+                    {/each}
+                </div>
+            {/if}
         </div>
     </section>
 </div>
