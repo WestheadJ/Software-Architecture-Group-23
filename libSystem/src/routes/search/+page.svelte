@@ -15,6 +15,13 @@
     let totalPages = $state(1); // the amount of pages, default is 1
     let pageSize = Number($page.url.searchParams.get("pageSize")) || 10; // Default to 10 // limit the amount of results default is 1
     let pageNumbers: any[] = $state([]);
+    let authorsFilter: any[];
+    let categoriesFilter: string[];
+    let selectedAuthors: string[] = $state([]);
+
+    let isAuthorsFilterOpen = $state(false);
+
+    authorsFilter = [...new Set(searchBarResults.map((item) => item.authors))];
 
     let from: any = $page.url.searchParams.get("from");
 
@@ -22,11 +29,11 @@
 
     totalPages = Math.ceil(queryResultsAmount / pageSize);
 
+    // If 3 or fewer pages, show all
     if (totalPages <= 3) {
-        // If 3 or fewer pages, show all
         pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-    } else {
         // If more than 3 pages, show dynamic pagination
+    } else {
         let neighbors = [currentPage - 1, currentPage, currentPage + 1].filter(
             (page) => page > 1 && page < totalPages, // Only include valid page numbers
         );
@@ -63,6 +70,14 @@
             goToPage(currentPage);
         }
     };
+
+    function toggleAuthor(author: any) {
+        if (selectedAuthors.includes(author)) {
+            selectedAuthors = selectedAuthors.filter((a) => a !== author);
+        } else {
+            selectedAuthors = [...selectedAuthors, author];
+        }
+    }
 </script>
 
 <div class="pt-20 h-full p-8 text-center">
@@ -99,7 +114,9 @@
         </div>
     </div>
 
-    <div class="min-h-screen flex justify-center flex-row">
+    <!-- Search Content & Filter Container -->
+    <section class="min-h-screen flex justify-center flex-row">
+        <!-- Search Content -->
         <div
             class=" grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 w-[75%] p-6"
         >
@@ -114,17 +131,28 @@
                 />
             {/each}
         </div>
+
+        <!-- Filter -->
         <div class="w-[25%] border-l-gray-600 border-l-2 flex flex-col">
-            <div>
-                Authors:
-                <p>1</p>
-                <p>2</p>
-            </div>
+            <a
+                onclick={() => {
+                    if (isAuthorsFilterOpen) {
+                        isAuthorsFilterOpen = false;
+                    } else isAuthorsFilterOpen = true;
+                }}>Authors:</a
+            >
+            {#if isAuthorsFilterOpen}
+                <div class=" flex flex-col text-left p-3">
+                    {#each authorsFilter as author}
+                        <label><input type="checkbox" />{author}</label>
+                    {/each}
+                </div>
+            {/if}
             <div>
                 Category:
                 <p>1</p>
                 <p>2</p>
             </div>
         </div>
-    </div>
+    </section>
 </div>
