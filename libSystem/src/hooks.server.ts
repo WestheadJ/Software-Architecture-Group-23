@@ -9,9 +9,12 @@ export const handle: Handle = async ({ event, resolve }) => {
         event.locals.user = event.locals.pb.authStore.model;
     }
 
-    // let cookie = JSON.stringify(event.cookies.get("session_key"))
 
-    // console.log("line 15:", cookie)
+
+    let cookie = event.cookies.get("session_key")
+
+
+    console.log("line 15:", cookie)
 
     const response = await resolve(event);
 

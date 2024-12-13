@@ -35,17 +35,21 @@ export const actions = {
       return { error: true };
 
     }
+    console.log(locals.mediaAPIKey)
 
     const isTokenVerified = await verifyToken(formData.email as Email, locals.mediaAPIKey.token)
 
     // this was a test to see if the condition below was causing the error
-    // if (isTokenVerified) {
-    //   cookies.set('session_key', JSON.stringify(locals.mediaAPIKey), {
-    //     path: '/', maxAge: 3600
-    //   });
-    // }
+    if (isTokenVerified) {
+      // cookies.set('session_key', locals.mediaAPIKey, {
+      //   path: '/', sameSite: "strict", httpOnly: true
+      // });
+    }
+
+    console.log(cookies.get('session_key'))
 
     if (locals.pb.authStore.isValid && isTokenVerified) {
+      // Cookies does not work with throw redirect...
       throw redirect(302, '/');
     }
     else {

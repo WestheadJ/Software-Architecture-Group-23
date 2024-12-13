@@ -15,9 +15,12 @@
     let totalPages = $state(1); // the amount of pages, default is 1
     let pageSize = Number($page.url.searchParams.get("pageSize")) || 10; // Default to 10 // limit the amount of results default is 1
     let pageNumbers: any[] = $state([]);
-    let authorsFilter: any[];
-    let genreFilter: any[];
+
+    let authorsFilter: any[] = $state([]);
+    let genreFilter: any[] = $state([]);
+
     let selectedAuthors: string[] = $state([]);
+    let selectedGenres: string[] = $state([]);
 
     let isAuthorsFilterOpen = $state(false);
     let isGenreFilterOpen = $state(false);
@@ -75,13 +78,19 @@
         }
     };
 
-    function toggleAuthor(author: any) {
-        if (selectedAuthors.includes(author)) {
-            selectedAuthors = selectedAuthors.filter((a) => a !== author);
-        } else {
-            selectedAuthors = [...selectedAuthors, author];
-        }
-    }
+    $effect(() => {
+        searchBarResults = $page.data.searchBarResults
+            .filter(
+                (item: any) =>
+                    selectedAuthors.length === 0 ||
+                    selectedAuthors.includes(item.authors),
+            )
+            .filter(
+                (item: any) =>
+                    selectedGenres.length === 0 ||
+                    selectedGenres.includes(item.genre),
+            );
+    });
 </script>
 
 <div class="pt-20 h-full p-8 text-center">
@@ -148,7 +157,13 @@
             {#if isAuthorsFilterOpen}
                 <div class=" flex flex-col text-left p-3">
                     {#each authorsFilter as author}
-                        <label><input type="checkbox" />{author}</label>
+                        <label
+                            ><input
+                                type="checkbox"
+                                value={author}
+                                bind:group={selectedAuthors}
+                            />{author}</label
+                        >
                     {/each}
                 </div>
             {/if}
@@ -157,12 +172,19 @@
                     if (isGenreFilterOpen) {
                         isGenreFilterOpen = false;
                     } else isGenreFilterOpen = true;
-                }}>genre:</a
+                }}>Genre:</a
             >
             {#if isGenreFilterOpen}
                 <div class=" flex flex-col text-left p-3">
                     {#each genreFilter as genre}
-                        <label><input type="checkbox" />{genre}</label>
+                        <label
+                            ><input
+                                type="checkbox"
+                                class="checkbox checkbox-primary"
+                                value={genre}
+                                bind:group={selectedGenres}
+                            />{genre}</label
+                        >
                     {/each}
                 </div>
             {/if}
