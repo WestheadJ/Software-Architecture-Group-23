@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { page } from '$app/stores';
 import { fullSearch } from '$lib/api/search';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
@@ -16,7 +15,7 @@ export const load = async ({ locals, url }: Parameters<PageServerLoad>[0]) => {
     let from: any = url.searchParams.get('from') || 1
     let to: any = url.searchParams.get("to") || pageSize
 
-    from = parseInt(from) - 1
+    from = parseInt(from)
     to = parseInt(to) - 1
 
 
