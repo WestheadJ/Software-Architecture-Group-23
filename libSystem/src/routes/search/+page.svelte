@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import Card from "$lib/components/Card.svelte";
+    import PageButton from "$lib/components/PageButton.svelte";
 
     let searchQuery: string = $state("");
     let searchBarResults = $state<any[]>([]);
@@ -65,63 +66,65 @@
 </script>
 
 <div class="pt-20 h-full p-8 text-center">
-    <h1 class="text-3xl">
-        Showing Results For: <strong><u>{searchQuery}</u></strong>
-    </h1>
-    <p>Results: {queryResultsAmount}</p>
+    <div>
+        <h1 class="text-3xl">
+            Showing Results For: <strong><u>{searchQuery}</u></strong>
+        </h1>
+        <p>Results: {queryResultsAmount}</p>
 
-    <div class="pt-5">
-        <!-- Previous page button -->
-        <button
-            class="hover:text-xl hover:text-purple-300"
-            onclick={goToPreviousPage}
-        >
-            &laquo; Prev
-        </button>
+        <div class="pt-5">
+            <!-- Previous page button -->
+            <PageButton callback={goToPreviousPage} arrow="&laquo; Prev" />
 
-        <!-- Page number buttons -->
-        {#each pageNumbers as page}
-            {#if page === currentPage}
-                <button
-                    class="p-2 text-violet-400 hover:text-xl hover:text-purple-300"
-                    onclick={() => goToPage(page)}
-                >
-                    <u>{page}</u>
-                </button>
-            {:else}
-                <button
-                    class="p-1 hover:text-xl hover:text-purple-300"
-                    onclick={() => goToPage(page)}
-                >
-                    {page}
-                </button>
-            {/if}
-        {/each}
+            <!-- Page number buttons -->
+            {#each pageNumbers as page}
+                {#if page === currentPage}
+                    <button
+                        class="p-2 text-violet-400 hover:text-xl hover:text-purple-300"
+                        onclick={() => goToPage(page)}
+                    >
+                        <u>{page}</u>
+                    </button>
+                {:else}
+                    <button
+                        class="p-1 hover:text-xl hover:text-purple-300"
+                        onclick={() => goToPage(page)}
+                    >
+                        {page}
+                    </button>
+                {/if}
+            {/each}
 
-        <!-- Next page button -->
-        <button
-            class="hover:text-xl hover:text-purple-300"
-            onclick={goToNextPage}
-        >
-            Next &raquo;
-        </button>
+            <PageButton callback={goToNextPage} arrow="Next &raquo;" />
+        </div>
     </div>
-</div>
 
-<div class="min-h-screen flex justify-center">
-    <div
-        class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 w-full max-w-screen-2xl p-6"
-    >
-        {#each searchBarResults as result, i}
-            <h1>{i}</h1>
-            <Card
-                mediaTitle={result.title}
-                mediaAuthors={result.authors}
-                mediaDesc={result.synopsis}
-                mediaGenre={result.genre}
-                mediaType={result.media_type}
-                imgUrl={result.media_image}
-            />
-        {/each}
+    <div class="min-h-screen flex justify-center flex-row">
+        <div
+            class=" grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 w-[75%] p-6"
+        >
+            {#each searchBarResults as result, i}
+                <Card
+                    mediaTitle={result.title}
+                    mediaAuthors={result.authors}
+                    mediaDesc={result.synopsis}
+                    mediaGenre={result.genre}
+                    mediaType={result.media_type}
+                    imgUrl={result.media_image}
+                />
+            {/each}
+        </div>
+        <div class="w-[25%] border-l-gray-600 border-l-2 flex flex-col">
+            <div>
+                Authors:
+                <p>1</p>
+                <p>2</p>
+            </div>
+            <div>
+                Category:
+                <p>1</p>
+                <p>2</p>
+            </div>
+        </div>
     </div>
 </div>

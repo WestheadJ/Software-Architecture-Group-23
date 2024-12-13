@@ -1,7 +1,6 @@
 <script lang="ts">
   import SearchBar from "./SearchBar.svelte";
   let searchBar: any;
-  let searchQuery: any;
 </script>
 
 <div class="hero bg-black min-h-screen flex items-center justify-center">

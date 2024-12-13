@@ -1,6 +1,5 @@
 <script>
   import Hero from "$lib/components/Hero.svelte";
-  import Card from "$lib/components/Card.svelte";
 </script>
 
 <Hero />
