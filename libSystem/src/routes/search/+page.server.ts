@@ -1,3 +1,4 @@
+import { page } from '$app/stores';
 import { fullSearch } from '$lib/api/search';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
@@ -10,8 +11,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
     // Check for the search parameter
     const searchQuery = url.searchParams.get('query');
+    const pageSize = Number(url.searchParams.get('pageSize')) | 10
     let from: any = url.searchParams.get('from') || 1
-    let to: any = url.searchParams.get("to") || 10
+    let to: any = url.searchParams.get("to") || pageSize
 
     from = parseInt(from) - 1
     to = parseInt(to) - 1
@@ -21,7 +23,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
         throw redirect(302, '/'); // Redirect with an error
     }
 
-    const results = await fullSearch(searchQuery, from, to)
+    const results = await fullSearch(searchQuery, from, to
+    )
 
     const resultData: any[] = results.data
     const resultsAmount: number = results.results
