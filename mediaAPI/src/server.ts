@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import NodeCache from 'node-cache';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
+import { count } from 'console';
 
 dotenv.config();
 
@@ -123,6 +124,23 @@ app.post('/media/search/item', async (req: Request, res: Response) => {
     }
 });
 
+app.post('/media/search/authors', async (req: Request, res: Response) => {
+    const from: number = req.body.from
+    const to: number = req.body.to
+
+    try {
+        console.log("returning authors")
+        const response = await searchByAuthor(from, to)
+        res.status(200);
+        res.send({ "data": response.data, "results": response.results })
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e })
+    }
+})
+
 app.get('/media/reservation', async (_req: Request, res: Response) => {
     res.send('There are no current reservations');
 });
@@ -237,4 +255,14 @@ async function searchItem(mediaTitle: string, mediaAuthors: string, mediaType: s
     }
     console.log(data)
     return { "success": true, "data": data }
+}
+
+async function searchByAuthor(from: number, to: number) {
+    const { data, error, count } = await supabase.from("media").select('authors', { count: 'exact' }).range(from, to)
+    if (error) {
+        console.log(error)
+        return { "success": false, "error": error }
+    }
+
+    return { "success": true, "data": data, "results": count }
 }

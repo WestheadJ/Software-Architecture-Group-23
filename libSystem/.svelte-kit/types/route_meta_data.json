@@ -21,6 +21,10 @@
 		"src/routes/search/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
+	"/search/search-authors": [
+		"src/routes/search/search-authors/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
 	"/search/search-bar": [
 		"src/routes/search/search-bar/+server.ts"
 	],

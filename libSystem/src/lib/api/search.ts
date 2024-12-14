@@ -19,3 +19,9 @@ export async function searchMediaItem(mediaTitle: string | null, mediaAuthors: s
     const searchResponseData = await searchResponse.json()
     return searchResponseData
 }
+
+export async function searchByAuthor(from: number, to: number) {
+    const searchResponse = await fetch('http://127.0.0.1:3000/media/search/authors', { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "from": from, "to": to }) })
+    const searchResponseData = await searchResponse.json()
+    return searchResponseData;
+}

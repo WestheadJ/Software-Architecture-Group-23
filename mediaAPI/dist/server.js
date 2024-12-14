@@ -105,6 +105,21 @@ app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, f
         res.send({ "error": true, "message": e });
     }
 }));
+app.post('/media/search/authors', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const from = req.body.from;
+    const to = req.body.to;
+    try {
+        console.log("returning authors");
+        const response = yield searchByAuthor(from, to);
+        res.status(200);
+        res.send({ "data": response.data, "results": response.results });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
 app.get('/media/reservation', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('There are no current reservations');
 }));
@@ -208,5 +223,15 @@ function searchItem(mediaTitle, mediaAuthors, mediaType) {
         }
         console.log(data);
         return { "success": true, "data": data };
+    });
+}
+function searchByAuthor(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error, count } = yield supabase.from("media").select('authors', { count: 'exact' }).range(from, to);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        return { "success": true, "data": data, "results": count };
     });
 }
