@@ -8,7 +8,7 @@ import { set_private_env, set_public_env, set_safe_public_env } from '../../../n
 export const options = {
 	app_dir: "_app",
 	app_template_contains_nonce: false,
-	csp: {"mode":"auto","directives":{"upgrade-insecure-requests":false,"block-all-mixed-content":false},"reportOnly":{"upgrade-insecure-requests":false,"block-all-mixed-content":false}},
+	csp: { "mode": "auto", "directives": { "upgrade-insecure-requests": false, "block-all-mixed-content": false }, "reportOnly": { "upgrade-insecure-requests": false, "block-all-mixed-content": false } },
 	csrf_check_origin: true,
 	embedded: false,
 	env_public_prefix: 'PUBLIC_',
@@ -27,7 +27,7 @@ export const options = {
 export async function get_hooks() {
 	return {
 		...(await import("../../../src/hooks.server.ts")),
-		
+
 	};
 }
 

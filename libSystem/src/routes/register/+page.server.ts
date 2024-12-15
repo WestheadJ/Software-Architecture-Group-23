@@ -15,9 +15,6 @@ export const actions = {
       email: formData.email,
       password: formData.password,
     };
-
-
-
     try {
       await locals.pb.collection('users').requestVerification(formData.email);
       await locals.pb.collection('users').create(formData);
@@ -29,6 +26,7 @@ export const actions = {
       console.log("Error:", error);
       return { error: true };
     }
+
   }
 } satisfies Actions;
 

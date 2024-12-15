@@ -2,14 +2,6 @@
   import { enhance } from "$app/forms";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-
-  export let form;
-
-  $: {
-    if (form?.success) {
-      goto("/");
-    }
-  }
 </script>
 
 <div class="w-screen h-screen flex">
