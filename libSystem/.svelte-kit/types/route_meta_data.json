@@ -11,6 +11,7 @@
 		"src/routes/logout/+server.ts"
 	],
 	"/profile": [
+		"src/routes/profile/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
 	"/register": [
