@@ -76,12 +76,12 @@
     <!-- Dropdown -->
     {#if dropdownActive()}
         <ul
-            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md max-h-60 overflow-auto w-full"
+            class="text-black absolute top-full mt-1 z-10 bg-white border border-gray-200 rounded-md shadow-md overflow-visible w-full"
         >
             {#each searchBarResults as suggestion}
                 <a
                     href="/search/search-item?mediaTitle={suggestion.title}&mediaAuthors={suggestion.authors}&mediaType={suggestion.media_type}"
-                    onclick={() => (searchBarResults = [])}
+                    onclick={clearSearch}
                 >
                     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                         {suggestion.media_type} | {suggestion.title} | {suggestion.authors}

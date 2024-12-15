@@ -255,7 +255,7 @@ function generateToken(email: Email): String | Boolean {
 async function searchBarMediaByTitle(query: String) {
     const { data, count, error } = await supabase
         .from('media')
-        .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 5);
+        .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 4);
     if (error) {
         console.log(error)
         return { "success": false, "error": error }

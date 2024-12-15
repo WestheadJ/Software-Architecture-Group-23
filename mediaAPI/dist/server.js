@@ -221,7 +221,7 @@ function searchBarMediaByTitle(query) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data, count, error } = yield supabase
             .from('media')
-            .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 5);
+            .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 4);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };

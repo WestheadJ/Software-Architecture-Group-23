@@ -1,7 +1,10 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    const { resultData } = $page.data;
-    let item = resultData.data[0];
+    let item = $state($page.data.resultData.data[0]);
+
+    $effect(() => {
+        item = $page.data.resultData.data[0];
+    });
 </script>
 
 <div class="">
