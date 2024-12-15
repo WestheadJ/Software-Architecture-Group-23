@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import CategoryResult from "$lib/components/CategoryResult.svelte";
 
     import PageButton from "$lib/components/PageButton.svelte";
 
@@ -99,16 +100,10 @@
         <!-- Search Content -->
         <div class="flex flex-col">
             {#each authorsData as result}
-                <div class=" flex flex-row">
-                    <p class="text-xl font-semibold">{result.authors}</p>
-                    <p>
-                        Amount of related media: {result.book_count}
-                    </p>
-                    <a
-                        class="btn btn-primary"
-                        href="/search?query={result.authors}">Search</a
-                    >
-                </div>
+                <CategoryResult
+                    resultTitle={result.authors}
+                    resultCount={result.book_count}
+                />
             {/each}
         </div>
     </section>

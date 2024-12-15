@@ -53,23 +53,25 @@
 
 <!-- Search Bar -->
 <div class="form-control w-full max-w-sm relative">
-    <input
-        type="text"
-        placeholder="Search media?"
-        class="input input-bordered rounded-full px-4 pr-10"
-        aria-label="Search"
-        bind:value={searchQuery}
-    />
-    <!-- Clear Button -->
-    {#if searchQuery.length > 0}
-        <button
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-            onclick={clearSearch}
-            aria-label="Clear search"
-        >
-            ✕
-        </button>
-    {/if}
+    <div>
+        <input
+            type="text"
+            placeholder="Search media?"
+            class="input input-bordered rounded-full px-4 pr-10"
+            aria-label="Search"
+            bind:value={searchQuery}
+        />
+
+        <!-- Clear Button -->
+        {#if searchQuery.length > 0}
+            <button
+                class="absolute right-6 top-6 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                onclick={clearSearch}
+                aria-label="Clear search"
+            >
+                ✕
+            </button>{/if}
+    </div>
 
     <!-- Dropdown -->
     {#if dropdownActive()}

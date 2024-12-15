@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
-
+    import CategoryResult from "$lib/components/CategoryResult.svelte";
     import PageButton from "$lib/components/PageButton.svelte";
 
     let mediaTypeData = $state<any[]>($page.data.mediaTypeData);
@@ -97,18 +97,14 @@
     <!-- Search Content & Filter Container -->
     <section class="min-h-screen flex justify-center flex-row">
         <!-- Search Content -->
-        <div class="flex flex-col">
+        <div
+            class=" grid grid-cols-3 lg:grid-cols-2 2xl:grid-cols-4 gap-4 w-[75%] p-6"
+        >
             {#each mediaTypeData as result}
-                <div class=" flex flex-row">
-                    <a class="text-xl font-semibold">{result.media_type}</a>
-                    <p>
-                        Amount of related media: {result.book_count}
-                    </p>
-                    <a
-                        class="btn btn-primary"
-                        href="/search?query={result.media_type}">Search</a
-                    >
-                </div>
+                <CategoryResult
+                    resultTitle={result.media_type}
+                    resultCount={result.book_count}
+                />
             {/each}
         </div>
     </section>

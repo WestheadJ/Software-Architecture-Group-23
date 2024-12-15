@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
-
+    import CategoryResult from "$lib/components/CategoryResult.svelte";
     import PageButton from "$lib/components/PageButton.svelte";
 
     let genresData = $state<any[]>($page.data.genresData);
@@ -97,18 +97,14 @@
     <!-- Search Content & Filter Container -->
     <section class="min-h-screen flex justify-center flex-row">
         <!-- Search Content -->
-        <div class="flex flex-col">
+        <div
+            class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10 p-4 w-full"
+        >
             {#each genresData as result}
-                <div class=" flex flex-row">
-                    <a class="text-xl font-semibold">{result.genre}</a>
-                    <p>
-                        Amount of related media: {result.book_count}
-                    </p>
-                    <a
-                        class="btn btn-primary"
-                        href="/search?query={result.genre}">Search</a
-                    >
-                </div>
+                <CategoryResult
+                    resultTitle={result.genre}
+                    resultCount={result.book_count}
+                />
             {/each}
         </div>
     </section>
