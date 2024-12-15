@@ -110,9 +110,39 @@ app.post('/media/search/authors', (req, res) => __awaiter(void 0, void 0, void 0
     const to = req.body.to;
     try {
         console.log("returning authors");
-        const response = yield searchByAuthor(from, to);
+        const response = yield searchByCategoryAuthors(from, to);
         res.status(200);
-        res.send({ "data": response.data, "results": response.results });
+        res.send({ "data": response.data });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
+app.post('/media/search/genres', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const from = req.body.from;
+    const to = req.body.to;
+    try {
+        console.log("returning authors");
+        const response = yield searchByCategoryGenres(from, to);
+        res.status(200);
+        res.send({ "data": response.data });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
+app.post('/media/search/media-types', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const from = req.body.from;
+    const to = req.body.to;
+    try {
+        console.log("returning authors");
+        const response = yield searchByCategoryMediaTypes(from, to);
+        res.status(200);
+        res.send({ "data": response.data });
     }
     catch (e) {
         console.log(e);
@@ -204,7 +234,7 @@ function searchAll(query, start, end) {
         const { data, count, error } = yield supabase
             .from('media')
             .select('*', { count: 'exact' })
-            .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(start, end);
+            .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%,media_type.ilike.%${query}%`).range(start, end);
         if (error) {
             console.log(error);
             return { "success": false, "error": error };
@@ -225,13 +255,45 @@ function searchItem(mediaTitle, mediaAuthors, mediaType) {
         return { "success": true, "data": data };
     });
 }
-function searchByAuthor(from, to) {
+function searchByCategoryAuthors(from, to) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { data, error, count } = yield supabase.from("media").select('authors', { count: 'exact' }).range(from, to);
+        const { data, error } = yield supabase.rpc(`get_author_counts`, {
+            limit_val: to, // Limit for pagination
+            offset_val: from,
+        });
         if (error) {
             console.log(error);
             return { "success": false, "error": error };
         }
-        return { "success": true, "data": data, "results": count };
+        console.log(data);
+        return { "success": true, "data": data };
+    });
+}
+function searchByCategoryGenres(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase.rpc(`get_genres_counts`, {
+            limit_val: to, // Limit for pagination
+            offset_val: from,
+        });
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        console.log(data);
+        return { "success": true, "data": data };
+    });
+}
+function searchByCategoryMediaTypes(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase.rpc(`get_media_type_counts`, {
+            limit_val: to, // Limit for pagination
+            offset_val: from,
+        });
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        console.log(data);
+        return { "success": true, "data": data };
     });
 }

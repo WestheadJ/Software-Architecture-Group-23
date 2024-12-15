@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { fullSearch, searchBar, searchByAuthor } from '$lib/api/search';
+import { searchByMediaType } from '$lib/api/search';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
@@ -18,18 +18,17 @@ export const load = async ({ locals, url }: Parameters<PageServerLoad>[0]) => {
     to = parseInt(to) - 1
 
 
-    const results = await searchByAuthor(from, to)
+    const results = await searchByMediaType(from, to)
 
     const resultData: any[] = results.data
-    const resultsAmount: number = results.results
 
-    console.log(resultData, resultsAmount)
+    console.log(resultData)
 
     // Return data to the page if checks pass
     return {
         isAuthenticated: locals.pb.authStore.isValid,
-        authorsData: resultData,
-        authorsResultsAmount: resultsAmount,
+        mediaTypeData: resultData,
+        mediaTypeResultsAmount: resultData[0].total_media_types,
 
     };
 };

@@ -20,15 +20,14 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     const results = await searchByAuthor(from, to)
 
     const resultData: any[] = results.data
-    const resultsAmount: number = results.results
 
-    console.log(resultData, resultsAmount)
+    console.log(resultData)
 
     // Return data to the page if checks pass
     return {
         isAuthenticated: locals.pb.authStore.isValid,
         authorsData: resultData,
-        authorsResultsAmount: resultsAmount,
+        authorsResultsAmount: resultData[0].total_authors,
 
     };
 };

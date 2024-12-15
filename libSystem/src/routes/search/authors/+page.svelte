@@ -37,7 +37,7 @@
         const to = from + pageSize;
 
         // Redirect to the search page with updated query parameters
-        window.location.href = `/search/search-authors?&from=${from}&to=${to}&page=${currentPage}`;
+        window.location.href = `/search/authors?&from=${from}&to=${to}&page=${currentPage}`;
     };
 
     // Navigate to the next page
@@ -58,6 +58,8 @@
             goToPage(currentPage);
         }
     };
+
+    console.log(authorsData);
 </script>
 
 <div class="pt-20 h-full p-8 text-center">
@@ -96,8 +98,17 @@
     <section class="min-h-screen flex justify-center flex-row">
         <!-- Search Content -->
         <div class="flex flex-col">
-            {#each authorsData as result, i}
-                <a class="p-4 text-xl font-semibold">{result.authors}</a>
+            {#each authorsData as result}
+                <div class=" flex flex-row">
+                    <p class="text-xl font-semibold">{result.authors}</p>
+                    <p>
+                        Amount of related media: {result.book_count}
+                    </p>
+                    <a
+                        class="btn btn-primary"
+                        href="/search?query={result.authors}">Search</a
+                    >
+                </div>
             {/each}
         </div>
     </section>

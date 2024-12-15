@@ -21,8 +21,16 @@
 		"src/routes/search/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
-	"/search/search-authors": [
-		"src/routes/search/search-authors/+page.server.ts",
+	"/search/authors": [
+		"src/routes/search/authors/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/search/genres": [
+		"src/routes/search/genres/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/search/media-type": [
+		"src/routes/search/media-type/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
 	"/search/search-bar": [

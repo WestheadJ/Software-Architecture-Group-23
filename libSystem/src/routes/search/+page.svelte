@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import Card from "$lib/components/Card.svelte";
+    import MediaCard from "$lib/components/MediaCard.svelte";
     import FilterCollapsable from "$lib/components/FilterCollapsable.svelte";
     import PageButton from "$lib/components/PageButton.svelte";
 
@@ -139,7 +139,7 @@
             class=" grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 w-[75%] p-6"
         >
             {#each searchBarResults as result, i}
-                <Card
+                <MediaCard
                     mediaTitle={result.title}
                     mediaAuthors={result.authors}
                     mediaDesc={result.synopsis}

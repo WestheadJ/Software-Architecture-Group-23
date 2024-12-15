@@ -25,3 +25,15 @@ export async function searchByAuthor(from: number, to: number) {
     const searchResponseData = await searchResponse.json()
     return searchResponseData;
 }
+
+export async function searchByGenre(from: number, to: number) {
+    const searchResponse = await fetch('http://127.0.0.1:3000/media/search/genres', { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "from": from, "to": to }) })
+    const searchResponseData = await searchResponse.json();
+    return searchResponseData;
+}
+
+export async function searchByMediaType(from: number, to: number) {
+    const searchResponse = await fetch('http://127.0.0.1:3000/media/search/media-types', { headers: { "Content-Type": "application/json" }, method: "POST", body: JSON.stringify({ "from": from, "to": to }) })
+    const searchResponseData = await searchResponse.json();
+    return searchResponseData;
+}

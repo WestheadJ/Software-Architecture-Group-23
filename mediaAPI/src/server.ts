@@ -130,9 +130,43 @@ app.post('/media/search/authors', async (req: Request, res: Response) => {
 
     try {
         console.log("returning authors")
-        const response = await searchByAuthor(from, to)
+        const response = await searchByCategoryAuthors(from, to)
         res.status(200);
-        res.send({ "data": response.data, "results": response.results })
+        res.send({ "data": response.data })
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e })
+    }
+})
+
+app.post('/media/search/genres', async (req: Request, res: Response) => {
+    const from: number = req.body.from
+    const to: number = req.body.to
+
+    try {
+        console.log("returning authors")
+        const response = await searchByCategoryGenres(from, to)
+        res.status(200);
+        res.send({ "data": response.data })
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e })
+    }
+})
+
+app.post('/media/search/media-types', async (req: Request, res: Response) => {
+    const from: number = req.body.from
+    const to: number = req.body.to
+
+    try {
+        console.log("returning authors")
+        const response = await searchByCategoryMediaTypes(from, to)
+        res.status(200);
+        res.send({ "data": response.data })
     }
     catch (e) {
         console.log(e);
@@ -234,7 +268,7 @@ async function searchAll(query: string, start: number, end: number) {
     const { data, count, error } = await supabase
         .from('media')
         .select('*', { count: 'exact' })
-        .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(start, end)
+        .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%,media_type.ilike.%${query}%`).range(start, end)
 
     if (error) {
         console.log(error)
@@ -257,12 +291,44 @@ async function searchItem(mediaTitle: string, mediaAuthors: string, mediaType: s
     return { "success": true, "data": data }
 }
 
-async function searchByAuthor(from: number, to: number) {
-    const { data, error, count } = await supabase.from("media").select('authors', { count: 'exact' }).range(from, to)
+async function searchByCategoryAuthors(from: number, to: number) {
+    const { data, error } = await supabase.rpc(`get_author_counts`, {
+        limit_val: to,    // Limit for pagination
+        offset_val: from,
+    })
+
     if (error) {
         console.log(error)
         return { "success": false, "error": error }
     }
+    console.log(data)
+    return { "success": true, "data": data }
+}
 
-    return { "success": true, "data": data, "results": count }
+async function searchByCategoryGenres(from: number, to: number) {
+    const { data, error } = await supabase.rpc(`get_genres_counts`, {
+        limit_val: to,    // Limit for pagination
+        offset_val: from,
+    })
+
+    if (error) {
+        console.log(error)
+        return { "success": false, "error": error }
+    }
+    console.log(data)
+    return { "success": true, "data": data }
+}
+
+async function searchByCategoryMediaTypes(from: number, to: number) {
+    const { data, error } = await supabase.rpc(`get_media_type_counts`, {
+        limit_val: to,    // Limit for pagination
+        offset_val: from,
+    })
+
+    if (error) {
+        console.log(error)
+        return { "success": false, "error": error }
+    }
+    console.log(data)
+    return { "success": true, "data": data }
 }
