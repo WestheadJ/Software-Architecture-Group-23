@@ -1,115 +1,176 @@
 <script lang="ts">
-  export let borrowedBooks: Array<{
-      id: string;
-      borrowed_at: string;
-      media: {
-          id: string;
-          title: string;
-          authors: string;
-          media_image: string;
-      };
-  }>;
+    export let borrowedBooks: Array<{
+        id: string;
+        borrowed_at: string;
+        media: {
+            id: string;
+            title: string;
+            authors: string;
+            media_image: string;
+        };
+    }> = [
+        {
+            id: "1",
+            borrowed_at: "2024-12-01",
+            media: {
+                id: "book1",
+                title: "The Great Gatsby",
+                authors: "F. Scott Fitzgerald",
+                media_image: "https://via.placeholder.com/150"
+            }
+        },
+        {
+            id: "2",
+            borrowed_at: "2024-11-15",
+            media: {
+                id: "book2",
+                title: "To Kill a Mockingbird",
+                authors: "Harper Lee",
+                media_image: "https://via.placeholder.com/150"
+            }
+        }
+    ];
 
-  let notification: { message: string; type: 'success' | 'error' } | null = null;
+    let notification: { message: string; type: 'success' | 'error' } | null = null;
 
-  async function renewBook(bookId: string) {
-      const response = await fetch('/api/renew-book', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookId, userId: 'currentUserId' }), 
-      });
+    async function renewBook(bookId: string) {
+        alert(`Renewing book with ID: ${bookId}`); // Placeholder for backend call
+    }
 
-      const data = await response.json();
-      if (data.success) {
-          notification = { message: 'Book renewed successfully!', type: 'success' };
-          setTimeout(() => (notification = null), 3000); 
-      } else {
-          notification = { message: 'Failed to renew book: ' + data.message, type: 'error' };
-          setTimeout(() => (notification = null), 3000); 
-      }
-  }
-
-  async function returnBook(bookId: string) {
-      const response = await fetch('/api/return-book', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookId, userId: 'currentUserId' }), 
-      });
-
-      const data = await response.json();
-      if (data.success) {
-          notification = { message: 'Book returned successfully!', type: 'success' };
-          setTimeout(() => (notification = null), 3000); 
-      } else {
-          notification = { message: 'Failed to return book: ' + data.message, type: 'error' };
-          setTimeout(() => (notification = null), 3000); 
-      }
-  }
+    async function returnBook(bookId: string) {
+        alert(`Returning book with ID: ${bookId}`); // Placeholder for backend call
+    }
 </script>
 
 <div class="profile-page p-4">
-  <h1 class="text-3xl font-bold mb-4">Your Borrowed Books</h1>
+    <h1 class="text-3xl font-bold mb-4">Your Borrowed Books</h1>
 
-  {#if notification}
-      <div class={`notification ${notification.type}`}>
-          {notification.message}
-      </div>
-  {/if}
+    {#if notification}
+        <div class={`notification notification-${notification.type}`}>
+            {notification.message}
+        </div>
+    {/if}
 
-  {#if borrowedBooks.length > 0}
-      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {#each borrowedBooks as book}
-              <li class="border p-4 rounded shadow bg-white">
-                  <img
-                      src={book.media.media_image}
-                      alt="{book.media.title}"
-                      class="w-full h-48 object-cover rounded"
-                  />
-                  <h2 class="text-xl font-semibold mt-2">{book.media.title}</h2>
-                  <p class="text-gray-500">{book.media.authors}</p>
-                  <p class="text-sm mt-1">
-                      <strong>Borrowed At:</strong> {new Date(book.borrowed_at).toLocaleDateString()}
-                  </p>
+    {#if borrowedBooks.length > 0}
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {#each borrowedBooks as book}
+                <li class="border p-4 rounded shadow bg-white">
+                    <img
+                        src={book.media.media_image}
+                        alt="{book.media.title}"
+                        class="w-full h-48 object-cover rounded"
+                    />
+                    <h2 class="text-xl font-semibold mt-2">{book.media.title}</h2>
+                    <p class="text-gray-500">{book.media.authors}</p>
+                    <p class="text-sm mt-1">
+                        <strong>Borrowed At:</strong> {new Date(book.borrowed_at).toLocaleDateString()}
+                    </p>
 
-                  <div class="flex justify-between mt-4">
-                      <button
-                          on:click={() => renewBook(book.id)}
-                          class="btn btn-primary"
-                      >
-                          Renew for 30 Days
-                      </button>
-                      <button
-                          on:click={() => returnBook(book.id)}
-                          class="btn btn-secondary"
-                      >
-                          Return Book
-                      </button>
-                  </div>
-              </li>
-          {/each}
-      </ul>
-  {:else}
-      <p class="text-gray-500">You have no borrowed books.</p>
-  {/if}
+                    <div class="flex justify-between mt-4">
+                        <button
+                            on:click={() => renewBook(book.id)}
+                            class="btn btn-primary"
+                        >
+                            Renew for 30 Days
+                        </button>
+                        <button
+                            on:click={() => returnBook(book.id)}
+                            class="btn btn-secondary"
+                        >
+                            Return Book
+                        </button>
+                    </div>
+                </li>
+            {/each}
+        </ul>
+    {:else}
+        <p class="text-gray-500">You have no borrowed books.</p>
+    {/if}
 </div>
 
 <style>
-  .profile-page {
-      max-width: 1200px;
-      margin: auto;
-  }
+    .profile-page {
+        max-width: 1200px;
+        margin: auto;
+    }
 
-  .notification {
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.5rem;
-  }
-  .notification.success {
-      background-color: #d4edda;
-      color: #155724;
-  }
-  .notification.error {
-      background-color: #f8d7da;
-      color: #721c24;
-  }
+    .notification {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        font-weight: bold;
+        text-align: center;
+    }
+    .notification-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .notification-error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-secondary:hover {
+        background-color: #495057;
+    }
+
+    .border {
+        border: 1px solid #ddd;
+    }
+    .rounded {
+        border-radius: 0.5rem;
+    }
+    .shadow {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .bg-white {
+        background-color: white;
+    }
+    .w-full {
+        width: 100%;
+    }
+    .h-48 {
+        height: 12rem;
+    }
+    .object-cover {
+        object-fit: cover;
+    }
+    .mt-2 {
+        margin-top: 0.5rem;
+    }
+    .text-xl {
+        font-size: 1.25rem;
+    }
+    .font-semibold {
+        font-weight: 600;
+    }
+    .text-gray-500 {
+        color: #6b7280;
+    }
+    .mt-4 {
+        margin-top: 1rem;
+    }
+    .flex {
+        display: flex;
+    }
+    .justify-between {
+        justify-content: space-between;
+    }
 </style>

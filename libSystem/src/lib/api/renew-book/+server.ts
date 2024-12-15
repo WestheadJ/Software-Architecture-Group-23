@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ request }) => {
         }
 
         const newBorrowedAt = new Date(borrowed.borrowed_at);
-        newBorrowedAt.setDate(newBorrowedAt.getDate() + 30); // Extend by 30 days
+        newBorrowedAt.setDate(newBorrowedAt.getDate() + 30); 
 
         const { error: updateError } = await supabase
             .from('borrowed')

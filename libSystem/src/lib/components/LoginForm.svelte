@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UserFormData } from "../../interfaces/User";
+  import type { User } from  '$lib/interfaces/User';
   
 
 </script>
