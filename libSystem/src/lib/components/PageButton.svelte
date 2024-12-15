@@ -3,6 +3,9 @@
     export let arrow;
 </script>
 
-<button class="hover:text-xl hover:text-purple-300" onclick={callback}>
+<button
+    class="transition-transform duration-300 hover:scale-105 hover:text-purple-300"
+    onclick={callback}
+>
     {arrow}
 </button>

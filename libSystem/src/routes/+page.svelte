@@ -5,8 +5,8 @@
 <Hero />
 
 <div class="w-full p-4 justify-center align-middle">
-  <h1 class="text-center text-4xl font-bold mb-6 underline">
-    Search By A Category
+  <h1 id="SearchForCategoies" class="text-center text-4xl font-bold mb-6">
+    Search By a Category
   </h1>
   <div class="flex flex-row justify-center">
     <a href="/search/authors"

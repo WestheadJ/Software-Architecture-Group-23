@@ -136,14 +136,14 @@
             {#each pageNumbers as page}
                 {#if page === currentPage}
                     <button
-                        class="p-2 text-violet-400 hover:text-xl hover:text-purple-300"
+                        class="p-2 text-violet-400 transition-transform duration-300 hover:scale-105 hover:text-purple-300"
                         onclick={() => goToPage(page)}
                     >
                         <u>{page}</u>
                     </button>
                 {:else}
                     <button
-                        class="p-1 hover:text-xl hover:text-purple-300"
+                        class="p-1 transition-transform duration-300 hover:scale-105 hover:text-purple-300"
                         onclick={() => goToPage(page)}
                     >
                         {page}

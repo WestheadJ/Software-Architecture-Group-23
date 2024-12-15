@@ -75,14 +75,14 @@
             {#each pageNumbers as page}
                 {#if page === currentPage}
                     <button
-                        class="p-2 text-violet-400 hover:text-xl hover:text-purple-300"
+                        class="p-2 text-violet-400 transition-transform duration-300 hover:scale-105 hover:text-purple-300"
                         onclick={() => goToPage(page)}
                     >
                         <u>{page}</u>
                     </button>
                 {:else}
                     <button
-                        class="p-1 hover:text-xl hover:text-purple-300"
+                        class="p-1 transition-transform duration-300 hover:scale-105 hover:text-purple-300"
                         onclick={() => goToPage(page)}
                     >
                         {page}
@@ -98,7 +98,7 @@
     <section class="min-h-screen flex justify-center flex-row">
         <!-- Search Content -->
         <div
-            class=" grid grid-cols-3 lg:grid-cols-2 2xl:grid-cols-4 gap-4 w-[75%] p-6"
+            class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10 p-4 w-full max-h-15"
         >
             {#each mediaTypeData as result}
                 <CategoryResult
