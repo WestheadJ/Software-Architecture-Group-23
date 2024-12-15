@@ -10,6 +10,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
     // Check for the search parameter
     const searchQuery = url.searchParams.get('query');
+    console.log(searchQuery)
     const pageSize = Number(url.searchParams.get('pageSize')) | 10
     let from: any = url.searchParams.get('from') || 0
     let to: any = url.searchParams.get("to") || pageSize

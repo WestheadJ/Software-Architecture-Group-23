@@ -4,13 +4,9 @@
     import FilterCollapsable from "$lib/components/FilterCollapsable.svelte";
     import PageButton from "$lib/components/PageButton.svelte";
 
-    let searchQuery: string = $state("");
-    let searchBarResults = $state<any[]>([]);
-    let queryResultsAmount = $state(0); // queryResultsAmount is a variable that changes state
-
-    searchBarResults = $page.data.searchBarResults;
-    searchQuery = $page.data.searchQuery;
-    queryResultsAmount = $page.data.queryResultsAmount;
+    let searchQuery: string = $state($page.data.searchQuery);
+    let searchBarResults = $state<any[]>($page.data.searchBarResults);
+    let queryResultsAmount = $state($page.data.queryResultsAmount); // queryResultsAmount is a variable that changes state
 
     let currentPage = $state(1); //set the current page as 1
     let totalPages = $state(1); // the amount of pages, default is 1
@@ -38,8 +34,49 @@
     let from: any = $page.url.searchParams.get("from");
 
     currentPage = from / pageSize + 1;
-
     totalPages = Math.ceil(queryResultsAmount / pageSize);
+
+    $effect(() => {
+        searchQuery = $page.data.searchQuery;
+        queryResultsAmount = $page.data.queryResultsAmount; // queryResultsAmount is a variable that changes state
+        from = $page.url.searchParams.get("from");
+        totalPages = Math.ceil(queryResultsAmount / pageSize);
+        currentPage = from / pageSize + 1;
+
+        searchBarResults = $page.data.searchBarResults
+            .filter(
+                (item: any) =>
+                    selectedAuthors.length === 0 ||
+                    selectedAuthors.includes(item.authors),
+            )
+            .filter(
+                (item: any) =>
+                    selectedGenres.length === 0 ||
+                    selectedGenres.includes(item.genre),
+            )
+            .filter(
+                (item: any) =>
+                    selectedMediaType.length === 0 ||
+                    selectedMediaType.includes(item.media_type),
+            );
+
+        // If 3 or fewer pages, show all
+        if (totalPages <= 3) {
+            pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+            // If more than 3 pages, show dynamic pagination
+        } else {
+            let neighbors = [
+                currentPage - 1,
+                currentPage,
+                currentPage + 1,
+            ].filter(
+                (page) => page > 1 && page < totalPages, // Only include valid page numbers
+            );
+
+            // Combine first page, neighbors, and last page
+            pageNumbers = [1, ...neighbors, totalPages].sort((a, b) => a - b);
+        }
+    });
 
     // If 3 or fewer pages, show all
     if (totalPages <= 3) {
@@ -82,20 +119,6 @@
             goToPage(currentPage);
         }
     };
-
-    $effect(() => {
-        searchBarResults = $page.data.searchBarResults
-            .filter(
-                (item: any) =>
-                    selectedAuthors.length === 0 ||
-                    selectedAuthors.includes(item.authors),
-            )
-            .filter(
-                (item: any) =>
-                    selectedGenres.length === 0 ||
-                    selectedGenres.includes(item.genre),
-            );
-    });
 </script>
 
 <div class="pt-20 h-full p-8 text-center">

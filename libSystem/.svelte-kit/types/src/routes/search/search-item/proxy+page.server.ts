@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { fullSearch, searchMediaItem } from '$lib/api/search';
+import { searchMediaItem } from '$lib/api/search';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
