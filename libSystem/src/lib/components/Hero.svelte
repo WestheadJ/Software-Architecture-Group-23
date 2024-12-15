@@ -14,7 +14,9 @@
       </div>
     </div>
   </div>
-  <div class="absolute top-3/4 translate-y-40 hover:scale-105">
+  <div
+    class="absolute top-3/4 translate-y-40 transition-transform duration-300 hover:scale-105"
+  >
     <a href="#SearchForCategoies">
       <div class="flex flex-row">
         <span class="pr-4">Scroll down for more!</span>
