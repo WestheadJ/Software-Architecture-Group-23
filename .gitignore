@@ -1,10 +1,5 @@
-node_modules
-<<<<<<< HEAD
-/.env
-.DS_STORE
-mediaAPI/.env
-=======
-./libSystem/node_modules
 .env
 .DS_STORE
->>>>>>> master
+/libSystem/node_modules
+/mediaAPI/node_modules
+/libSystem/.svelte-kit
