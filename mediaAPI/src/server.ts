@@ -94,22 +94,27 @@ app.post('/media/search', async (req: Request, res: Response) => {
     const searchQuery: string = req.body.query
     const from: number = req.body.from;
     const to: number = req.body.to
-    console.log(from)
 
-    try {
-        const searchResult = await searchAll(searchQuery, from, to)
-
-        res.status(200)
-        res.send({ "data": searchResult.data, "results": searchResult.results })
-
-    }
-    catch (e) {
-        console.log(e)
+    if (searchQuery === undefined || from === undefined || to === undefined) {
         res.status(500)
-        res.send({ "error": true, "message": e })
+        res.send({ "error": true, message: "No details given!" })
     }
+    else {
 
+        try {
+            const searchResult = await searchAll(searchQuery, from, to)
 
+            res.status(200)
+            res.send({ "data": searchResult.data, "results": searchResult.results })
+
+        }
+        catch (e) {
+            console.log(e)
+            res.status(500)
+            res.send({ "error": true, "message": e })
+        }
+
+    }
 })
 
 app.post('/media/search/item', async (req: Request, res: Response) => {

@@ -87,16 +87,21 @@ app.post('/media/search', (req, res) => __awaiter(void 0, void 0, void 0, functi
     const searchQuery = req.body.query;
     const from = req.body.from;
     const to = req.body.to;
-    console.log(from);
-    try {
-        const searchResult = yield searchAll(searchQuery, from, to);
-        res.status(200);
-        res.send({ "data": searchResult.data, "results": searchResult.results });
-    }
-    catch (e) {
-        console.log(e);
+    if (searchQuery === undefined || from === undefined || to === undefined) {
         res.status(500);
-        res.send({ "error": true, "message": e });
+        res.send({ "error": true, message: "No details given!" });
+    }
+    else {
+        try {
+            const searchResult = yield searchAll(searchQuery, from, to);
+            res.status(200);
+            res.send({ "data": searchResult.data, "results": searchResult.results });
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500);
+            res.send({ "error": true, "message": e });
+        }
     }
 }));
 app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
