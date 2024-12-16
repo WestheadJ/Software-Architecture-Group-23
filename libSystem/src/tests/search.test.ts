@@ -1,5 +1,3 @@
-import { searchBar } from '$lib/api/search';
-import exp from 'constants';
 import { describe, it, expect } from 'vitest';
 
 describe("search for an item", async () => {
