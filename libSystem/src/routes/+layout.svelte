@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { format } from "path";
   import "../app.css";
   import type { LayoutData } from "./$types";
   import type { Snippet } from "svelte";
+  import { page } from "$app/stores";
+  import SearchBar from "$lib/components/SearchBar.svelte";
   let { children, data }: { data: LayoutData; children: Snippet } = $props();
+  let currentPageUrl: string = $page.url.pathname;
+
+  const ignoredPages: string[] = ["/login", "/register", "/"];
 </script>
 
 <div class="navbar bg-base-100 fixed z-50">
@@ -50,15 +54,8 @@
       />
       <h1>AML Library</h1>
     </a>
-    {#if data.isAuthenticated}
-      <div class="form-control w-full max-w-sm">
-        <input
-          type="text"
-          placeholder="Search media?"
-          class="input input-bordered rounded-full px-4"
-          aria-label="Search"
-        />
-      </div>
+    {#if !ignoredPages.includes(currentPageUrl) && data.isAuthenticated}
+      <SearchBar isMainSearch={false} />
     {/if}
   </div>
   <div class="navbar-end gap-2">

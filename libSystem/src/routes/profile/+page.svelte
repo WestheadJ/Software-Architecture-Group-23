@@ -1,3 +1,6 @@
+<!-- <script>
+  import Navbar from "$lib/components/Navbar.svelte";
+  import Card from "$lib/components/Card.svelte";
 <script lang="ts">
   export let borrowedBooks: Array<{
       id: string;
@@ -99,17 +102,24 @@
       margin: auto;
   }
 
-  .notification {
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.5rem;
-  }
-  .notification.success {
-      background-color: #d4edda;
-      color: #155724;
-  }
-  .notification.error {
-      background-color: #f8d7da;
-      color: #721c24;
-  }
-</style>
+.banner {
+  background-color: #4a90e2;
+  height: 15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.avatar img {
+  object-fit: cover;
+}
+
+h1 {
+  color: white;
+}
+
+p {
+  color: #718096;
+}
+</style> -->

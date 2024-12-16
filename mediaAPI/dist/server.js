@@ -25,15 +25,18 @@ const PORT = process.env.PORT || 3000;
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
-const supabase = (0, supabase_js_1.createClient)(process.env.URL, process.env.PUBLIC_KEY);
-const API_Keys_Cache = new node_cache_1.default();
+const supabase = (0, supabase_js_1.createClient)(process.env.PUBLIC_SUPABASE_URL, process.env.PUBLIC_SUPABASE_ANON_KEY);
+const API_KEYS_CACHE = new node_cache_1.default();
+const SEARCH_CACHE = new node_cache_1.default();
 app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('hello world!');
 }));
+// Token Auth Endpoints
 app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     console.log("Token requested by:", email);
     let token = generateToken(email);
+    console.log("token is:", token);
     res.status(200);
     res.send({ "token": token });
 }));
@@ -54,21 +57,98 @@ app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 app.post('/auth/token/refresh', (req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
-app.post('/media/get/all', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Search endpoints
+app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const token = req.body.token;
-    if (verifyAuthToken(email, token)) {
-        searchMedia();
+    const query = req.body.query;
+    try {
+        const result = yield searchBarMediaByTitle(query);
         res.status(200);
-        res.send("Some library stuff");
+        res.send({ "result": result });
     }
-    else {
+    catch (err) {
+        console.log(err);
         res.status(401);
         res.send('Not authorized');
     }
 }));
-app.post('/media/get/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("there's no such thing");
+app.post('/media/search', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchQuery = req.body.query;
+    const from = req.body.from;
+    const to = req.body.to;
+    console.log(from);
+    try {
+        const searchResult = yield searchAll(searchQuery, from, to);
+        res.status(200);
+        res.send({ "data": searchResult.data, "results": searchResult.results });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
+app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const mediaTitle = req.body.mediaTitle;
+    const mediaAuthors = req.body.mediaAuthors;
+    const mediaType = req.body.mediaType;
+    try {
+        console.log("returning");
+        const response = yield searchItem(mediaTitle, mediaAuthors, mediaType);
+        res.status(200);
+        res.send({ "data": response });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
+app.post('/media/search/authors', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const from = req.body.from;
+    const to = req.body.to;
+    try {
+        console.log("returning authors");
+        const response = yield searchByCategoryAuthors(from, to);
+        res.status(200);
+        res.send({ "data": response.data });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
+app.post('/media/search/genres', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const from = req.body.from;
+    const to = req.body.to;
+    try {
+        console.log("returning authors");
+        const response = yield searchByCategoryGenres(from, to);
+        res.status(200);
+        res.send({ "data": response.data });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
+}));
+app.post('/media/search/media-types', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const from = req.body.from;
+    const to = req.body.to;
+    try {
+        console.log("returning authors");
+        const response = yield searchByCategoryMediaTypes(from, to);
+        res.status(200);
+        res.send({ "data": response.data });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
+        res.send({ "error": true, "message": e });
+    }
 }));
 app.get('/media/reservation', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('There are no current reservations');
@@ -92,15 +172,15 @@ app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
 function verifyAuthToken(email, token) {
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email);
         return false;
     }
-    if (API_Keys_Cache.get(email) !== token) {
+    if (API_KEYS_CACHE.get(email) !== token) {
         console.log("Invalid token: ", token);
         return false;
     }
-    if (API_Keys_Cache.get(email) === token) {
+    if (API_KEYS_CACHE.get(email) === token) {
         console.log("valid token");
         return true;
     }
@@ -110,25 +190,25 @@ function verifyAuthToken(email, token) {
     }
 }
 function refreshToken(email) {
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email);
         return false;
     }
     else {
         console.log("Deleting token");
-        API_Keys_Cache.del("email");
+        API_KEYS_CACHE.del("email");
         console.log("Creating new token");
         const token = (0, uuid_1.v4)();
-        API_Keys_Cache.set(email, token);
+        API_KEYS_CACHE.set(email, token);
         return token;
     }
 }
 function generateToken(email) {
     let token;
-    if (API_Keys_Cache.get(email) === undefined) {
+    if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Creating new token");
         token = (0, uuid_1.v4)();
-        API_Keys_Cache.set(email, token);
+        API_KEYS_CACHE.set(email, token);
         return token;
     }
     else {
@@ -137,11 +217,83 @@ function generateToken(email) {
         return token;
     }
 }
-function searchMedia() {
+function searchBarMediaByTitle(query) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, count, error } = yield supabase
+            .from('media')
+            .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 4);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        return { "success": true, "data": data, "results": count };
+    });
+}
+function searchAll(query, start, end) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, count, error } = yield supabase
+            .from('media')
+            .select('*', { count: 'exact' })
+            .or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%,media_type.ilike.%${query}%`).range(start, end);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        return { "success": true, "data": data, "results": count };
+    });
+}
+function searchItem(mediaTitle, mediaAuthors, mediaType) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data, error } = yield supabase
             .from('media')
-            .select('*');
+            .select('*').eq("title", mediaTitle).eq("media_type", mediaType).eq("authors", mediaAuthors);
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
         console.log(data);
+        return { "success": true, "data": data };
+    });
+}
+function searchByCategoryAuthors(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase.rpc(`get_author_counts`, {
+            limit_val: to, // Limit for pagination
+            offset_val: from,
+        });
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        console.log(data);
+        return { "success": true, "data": data };
+    });
+}
+function searchByCategoryGenres(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase.rpc(`get_genres_counts`, {
+            limit_val: to, // Limit for pagination
+            offset_val: from,
+        });
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        console.log(data);
+        return { "success": true, "data": data };
+    });
+}
+function searchByCategoryMediaTypes(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, error } = yield supabase.rpc(`get_media_type_counts`, {
+            limit_val: to, // Limit for pagination
+            offset_val: from,
+        });
+        if (error) {
+            console.log(error);
+            return { "success": false, "error": error };
+        }
+        console.log(data);
+        return { "success": true, "data": data };
     });
 }

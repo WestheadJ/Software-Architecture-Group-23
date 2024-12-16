@@ -1,5 +1,7 @@
+import type { Email } from "$lib/types/types";
+
 export interface User {
-  email: string;
+  email: Email;
   password: string;
   passwordConfirm: string;
 }
@@ -8,5 +10,6 @@ export interface Media {
   title: string;
   author: string;
   synopsis: string;
+  genre: string;
   status: string;
 }
