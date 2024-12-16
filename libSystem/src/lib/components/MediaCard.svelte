@@ -17,7 +17,12 @@
   <div class="card-body">
     <h2 class="card-title">
       {mediaTitle}
-      <div class="badge badge-secondary">New</div>
+      {#if mediaType === "film"}
+        <div class="badge badge-secondary">{mediaType}</div>
+      {/if}
+      {#if mediaType === "book"}
+        <div class="badge badge-accent">{mediaType}</div>
+      {/if}
     </h2>
     <h3>Authors:</h3>
     {mediaAuthors}

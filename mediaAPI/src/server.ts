@@ -34,15 +34,15 @@ app.get('/', async (_req: Request, res: Response) => {
 // Token Auth Endpoints
 app.post('/auth/token/get-token', async (req: Request, res: Response) => {
     const email: Email = req.body.email;
-    console.log("Token requested by:", email)
-
-    let token: String | Boolean = generateToken(email)
-
-    console.log("token is:", token)
-
-
-    res.status(200)
-    res.send({ "token": token })
+    if (email === undefined) {
+        res.status(500)
+        res.send({ error: true, message: "Unable to get a token without an email" })
+    }
+    else {
+        let token: String | Boolean = generateToken(email)
+        res.status(200)
+        res.send({ "token": token })
+    }
 });
 
 app.post('/auth/token/verify', async (req: Request, res: Response) => {
@@ -72,15 +72,21 @@ app.post('/media/search/search-bar', async (req: Request, res: Response) => {
     const token: String = req.body.token;
     const query: String = req.body.query;
 
-    try {
-        const result = await searchBarMediaByTitle(query)
-        res.status(200)
-        res.send({ "result": result })
+    if (query === undefined) {
+        res.status(500)
+        res.send({ "error": true, message: "No query given" })
     }
-    catch (err) {
-        console.log(err)
-        res.status(401)
-        res.send('Not authorized');
+    else {
+        try {
+            const result = await searchBarMediaByTitle(query)
+            res.status(200)
+            res.send({ "result": result })
+        }
+        catch (err) {
+            console.log(err)
+            res.status(401)
+            res.send('Not authorized');
+        }
     }
 });
 
@@ -111,16 +117,24 @@ app.post('/media/search/item', async (req: Request, res: Response) => {
     const mediaAuthors: string = req.body.mediaAuthors;
     const mediaType: string = req.body.mediaType;
 
-    try {
-        console.log("returning")
-        const response = await searchItem(mediaTitle, mediaAuthors, mediaType);
-        res.status(200);
-        res.send({ "data": response })
+    if (mediaTitle === undefined || mediaAuthors === undefined || mediaType === undefined) {
+        res.status(500)
+        res.send({ "error": true, message: "No details given!" })
     }
-    catch (e) {
-        console.log(e);
-        res.status(500);
-        res.send({ "error": true, "message": e })
+    else {
+
+
+        try {
+            console.log("returning")
+            const response = await searchItem(mediaTitle, mediaAuthors, mediaType);
+            res.status(200);
+            res.send({ "data": response })
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500);
+            res.send({ "error": true, "message": e })
+        }
     }
 });
 

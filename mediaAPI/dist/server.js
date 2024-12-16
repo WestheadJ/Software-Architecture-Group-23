@@ -34,11 +34,15 @@ app.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // Token Auth Endpoints
 app.post('/auth/token/get-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
-    console.log("Token requested by:", email);
-    let token = generateToken(email);
-    console.log("token is:", token);
-    res.status(200);
-    res.send({ "token": token });
+    if (email === undefined) {
+        res.status(500);
+        res.send({ error: true, message: "Unable to get a token without an email" });
+    }
+    else {
+        let token = generateToken(email);
+        res.status(200);
+        res.send({ "token": token });
+    }
 }));
 app.post('/auth/token/verify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
@@ -62,15 +66,21 @@ app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, voi
     const email = req.body.email;
     const token = req.body.token;
     const query = req.body.query;
-    try {
-        const result = yield searchBarMediaByTitle(query);
-        res.status(200);
-        res.send({ "result": result });
+    if (query === undefined) {
+        res.status(500);
+        res.send({ "error": true, message: "No query given" });
     }
-    catch (err) {
-        console.log(err);
-        res.status(401);
-        res.send('Not authorized');
+    else {
+        try {
+            const result = yield searchBarMediaByTitle(query);
+            res.status(200);
+            res.send({ "result": result });
+        }
+        catch (err) {
+            console.log(err);
+            res.status(401);
+            res.send('Not authorized');
+        }
     }
 }));
 app.post('/media/search', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,16 +103,22 @@ app.post('/media/search/item', (req, res) => __awaiter(void 0, void 0, void 0, f
     const mediaTitle = req.body.mediaTitle;
     const mediaAuthors = req.body.mediaAuthors;
     const mediaType = req.body.mediaType;
-    try {
-        console.log("returning");
-        const response = yield searchItem(mediaTitle, mediaAuthors, mediaType);
-        res.status(200);
-        res.send({ "data": response });
-    }
-    catch (e) {
-        console.log(e);
+    if (mediaTitle === undefined || mediaAuthors === undefined || mediaType === undefined) {
         res.status(500);
-        res.send({ "error": true, "message": e });
+        res.send({ "error": true, message: "No details given!" });
+    }
+    else {
+        try {
+            console.log("returning");
+            const response = yield searchItem(mediaTitle, mediaAuthors, mediaType);
+            res.status(200);
+            res.send({ "data": response });
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500);
+            res.send({ "error": true, "message": e });
+        }
     }
 }));
 app.post('/media/search/authors', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
