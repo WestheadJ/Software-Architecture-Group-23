@@ -72,7 +72,7 @@ app.post('/media/search/search-bar', (req, res) => __awaiter(void 0, void 0, voi
     }
     else {
         try {
-            const result = yield searchBarMediaByTitle(query);
+            const result = yield searchBar(query);
             res.status(200);
             res.send({ "result": result });
         }
@@ -180,15 +180,6 @@ app.get('/media/booked', (_req, res) => __awaiter(void 0, void 0, void 0, functi
 app.put('/media/reserve', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('Reserved!');
 }));
-app.put('/media/book', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Booked');
-}));
-app.post('/media/create', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Are you staff?');
-}));
-app.delete('/media/delete', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Removed media');
-}));
 app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
@@ -238,7 +229,7 @@ function generateToken(email) {
         return token;
     }
 }
-function searchBarMediaByTitle(query) {
+function searchBar(query) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data, count, error } = yield supabase
             .from('media')

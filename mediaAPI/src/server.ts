@@ -47,7 +47,7 @@ app.post('/auth/token/get-token', async (req: Request, res: Response) => {
 
 app.post('/auth/token/verify', async (req: Request, res: Response) => {
     const email: Email = req.body.email
-    const token: String = req.body.token;
+    const token: string = req.body.token;
     console.log(token)
     console.log(`Token being verified by: ${email}, token: ${token}`)
 
@@ -78,7 +78,7 @@ app.post('/media/search/search-bar', async (req: Request, res: Response) => {
     }
     else {
         try {
-            const result = await searchBarMediaByTitle(query)
+            const result = await searchBar(query)
             res.status(200)
             res.send({ "result": result })
         }
@@ -94,26 +94,21 @@ app.post('/media/search', async (req: Request, res: Response) => {
     const searchQuery: string = req.body.query
     const from: number = req.body.from;
     const to: number = req.body.to
-
     if (searchQuery === undefined || from === undefined || to === undefined) {
         res.status(500)
         res.send({ "error": true, message: "No details given!" })
     }
     else {
-
         try {
             const searchResult = await searchAll(searchQuery, from, to)
-
             res.status(200)
             res.send({ "data": searchResult.data, "results": searchResult.results })
-
         }
         catch (e) {
             console.log(e)
             res.status(500)
             res.send({ "error": true, "message": e })
         }
-
     }
 })
 
@@ -127,8 +122,6 @@ app.post('/media/search/item', async (req: Request, res: Response) => {
         res.send({ "error": true, message: "No details given!" })
     }
     else {
-
-
         try {
             console.log("returning")
             const response = await searchItem(mediaTitle, mediaAuthors, mediaType);
@@ -206,23 +199,12 @@ app.put('/media/reserve', async (_req: Request, res: Response) => {
     res.send('Reserved!');
 });
 
-app.put('/media/book', async (_req: Request, res: Response) => {
-    res.send('Booked');
-});
-
-app.post('/media/create', async (_req: Request, res: Response) => {
-    res.send('Are you staff?');
-});
-
-app.delete('/media/delete', async (_req: Request, res: Response) => {
-    res.send('Removed media');
-});
 
 app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
 
-function verifyAuthToken(email: Email, token: String): Boolean {
+function verifyAuthToken(email: Email, token: string): Boolean {
     if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email)
         return false
@@ -241,7 +223,7 @@ function verifyAuthToken(email: Email, token: String): Boolean {
     }
 }
 
-function refreshToken(email: Email): String | Boolean {
+function refreshToken(email: Email): string | Boolean {
     if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Invalid email", email)
         return false
@@ -256,8 +238,8 @@ function refreshToken(email: Email): String | Boolean {
     }
 }
 
-function generateToken(email: Email): String | Boolean {
-    let token: String | Boolean;
+function generateToken(email: Email): string | Boolean {
+    let token: string | Boolean;
     if (API_KEYS_CACHE.get(email) === undefined) {
         console.log("Creating new token")
         token = uuidv4()
@@ -271,7 +253,7 @@ function generateToken(email: Email): String | Boolean {
     }
 }
 
-async function searchBarMediaByTitle(query: String) {
+async function searchBar(query: String) {
     const { data, count, error } = await supabase
         .from('media')
         .select('title, authors, media_type, genre', { count: "exact" }).or(`title.ilike.%${query}%,authors.ilike.%${query}%,genre.ilike.%${query}%`).range(0, 4);

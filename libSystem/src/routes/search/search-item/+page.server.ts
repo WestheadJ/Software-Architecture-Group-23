@@ -9,9 +9,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
     }
 
     // Check for the search parameter
-    const mediaTitle: string | null = url.searchParams.get('mediaTitle')
-    const mediaAuthors: string | null = url.searchParams.get("mediaAuthors");
-    const mediaType: string | null = url.searchParams.get("mediaType");
+    const mediaTitle: string = url.searchParams.get('mediaTitle') || ""
+    const mediaAuthors: string = url.searchParams.get("mediaAuthors") || ""
+    const mediaType: string = url.searchParams.get("mediaType") || ""
 
     if ((!mediaTitle || mediaTitle.trim() === "") && (!mediaAuthors || mediaAuthors.trim() === "") && (!mediaType || mediaType.trim() === "")) {
         throw redirect(302, '/'); // Redirect with an error
