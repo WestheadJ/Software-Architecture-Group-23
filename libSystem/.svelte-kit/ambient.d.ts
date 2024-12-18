@@ -26,65 +26,32 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const TMUX_PANE: string;
-	export const LC_MEASUREMENT: string;
-	export const EDITOR: string;
-	export const XAUTHORITY: string;
-	export const SHELL: string;
-	export const MAIL: string;
-	export const VTE_VERSION: string;
-	export const NVIM: string;
-	export const HOME: string;
-	export const XDG_VTNR: string;
-	export const I3SOCK: string;
-	export const XDG_SEAT: string;
-	export const HG: string;
-	export const TMUX: string;
-	export const XDG_GREETER_DATA_DIR: string;
-	export const NVIM_LOG_FILE: string;
-	export const TERM_PROGRAM: string;
-	export const GDMSESSION: string;
-	export const XDG_SESSION_TYPE: string;
-	export const XDG_SESSION_PATH: string;
-	export const XDG_SESSION_DESKTOP: string;
-	export const GTK_MODULES: string;
-	export const XDG_SESSION_CLASS: string;
-	export const PWD: string;
-	export const DESKTOP_SESSION: string;
-	export const LC_MONETARY: string;
-	export const SHLVL: string;
-	export const TERM_PROGRAM_VERSION: string;
-	export const MASON: string;
-	export const UBUNTU_MENUPROXY: string;
-	export const USER: string;
-	export const DEBUGINFOD_URLS: string;
-	export const PATH: string;
-	export const XDG_SEAT_PATH: string;
-	export const LC_IDENTIFICATION: string;
-	export const LaunchInstanceID: string;
-	export const ANDROID_HOME: string;
-	export const XDG_CURRENT_DESKTOP: string;
-	export const GTK3_MODULES: string;
-	export const ANDROID_SDK_ROOT: string;
-	export const WINDOWID: string;
-	export const LANG: string;
-	export const XDG_RUNTIME_DIR: string;
-	export const LC_NUMERIC: string;
+	export const ALLUSERSPROFILE: string;
+	export const APPDATA: string;
+	export const BASE_URL: string;
+	export const ChocolateyInstall: string;
+	export const ChocolateyLastPathUpdate: string;
+	export const CHROME_CRASHPAD_PIPE_NAME: string;
+	export const COLOR: string;
 	export const COLORTERM: string;
-	export const LOGNAME: string;
-	export const MOTD_SHOWN: string;
-	export const TERM: string;
-	export const LC_TIME: string;
-	export const VIMRUNTIME: string;
-	export const LC_NAME: string;
-	export const LC_PAPER: string;
-	export const DBUS_SESSION_BUS_ADDRESS: string;
-	export const MYVIMRC: string;
-	export const BROWSER: string;
-	export const DISPLAY: string;
-	export const XDG_SESSION_ID: string;
-	export const LC_TELEPHONE: string;
-	export const LC_ADDRESS: string;
+	export const CommonProgramFiles: string;
+	export const CommonProgramW6432: string;
+	export const COMPUTERNAME: string;
+	export const ComSpec: string;
+	export const DEV: string;
+	export const DriverData: string;
+	export const EDITOR: string;
+	export const GIT_ASKPASS: string;
+	export const GIT_INSTALL_ROOT: string;
+	export const HOME: string;
+	export const HOMEDRIVE: string;
+	export const HOMEPATH: string;
+	export const INIT_CWD: string;
+	export const LANG: string;
+	export const LOCALAPPDATA: string;
+	export const LOGONSERVER: string;
+	export const MODE: string;
+	export const NODE: string;
 	export const NODE_ENV: string;
 	export const npm_command: string;
 	export const npm_config_cache: string;
@@ -107,6 +74,7 @@ declare module '$env/static/private' {
 	export const npm_package_version: string;
 	export const NUMBER_OF_PROCESSORS: string;
 	export const OneDrive: string;
+	export const OneDriveConsumer: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const OS: string;
 	export const Path: string;
@@ -115,6 +83,7 @@ declare module '$env/static/private' {
 	export const PROCESSOR_IDENTIFIER: string;
 	export const PROCESSOR_LEVEL: string;
 	export const PROCESSOR_REVISION: string;
+	export const PROD: string;
 	export const ProgramData: string;
 	export const ProgramFiles: string;
 	export const ProgramW6432: string;
@@ -127,18 +96,22 @@ declare module '$env/static/private' {
 	export const TEMP: string;
 	export const TERM_PROGRAM: string;
 	export const TERM_PROGRAM_VERSION: string;
+	export const TEST: string;
 	export const TMP: string;
 	export const USERDOMAIN: string;
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
+	export const VITEST: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const VSCODE_INJECTION: string;
 	export const windir: string;
-	export const ZES_ENABLE_SYSMAN: string;
+	export const WSLENV: string;
+	export const WT_PROFILE_ID: string;
+	export const WT_SESSION: string;
 }
 
 /**
@@ -151,7 +124,7 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-
+	
 }
 
 /**
@@ -170,65 +143,32 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		TMUX_PANE: string;
-		LC_MEASUREMENT: string;
-		EDITOR: string;
-		XAUTHORITY: string;
-		SHELL: string;
-		MAIL: string;
-		VTE_VERSION: string;
-		NVIM: string;
-		HOME: string;
-		XDG_VTNR: string;
-		I3SOCK: string;
-		XDG_SEAT: string;
-		HG: string;
-		TMUX: string;
-		XDG_GREETER_DATA_DIR: string;
-		NVIM_LOG_FILE: string;
-		TERM_PROGRAM: string;
-		GDMSESSION: string;
-		XDG_SESSION_TYPE: string;
-		XDG_SESSION_PATH: string;
-		XDG_SESSION_DESKTOP: string;
-		GTK_MODULES: string;
-		XDG_SESSION_CLASS: string;
-		PWD: string;
-		DESKTOP_SESSION: string;
-		LC_MONETARY: string;
-		SHLVL: string;
-		TERM_PROGRAM_VERSION: string;
-		MASON: string;
-		UBUNTU_MENUPROXY: string;
-		USER: string;
-		DEBUGINFOD_URLS: string;
-		PATH: string;
-		XDG_SEAT_PATH: string;
-		LC_IDENTIFICATION: string;
-		LaunchInstanceID: string;
-		ANDROID_HOME: string;
-		XDG_CURRENT_DESKTOP: string;
-		GTK3_MODULES: string;
-		ANDROID_SDK_ROOT: string;
-		WINDOWID: string;
-		LANG: string;
-		XDG_RUNTIME_DIR: string;
-		LC_NUMERIC: string;
+		ALLUSERSPROFILE: string;
+		APPDATA: string;
+		BASE_URL: string;
+		ChocolateyInstall: string;
+		ChocolateyLastPathUpdate: string;
+		CHROME_CRASHPAD_PIPE_NAME: string;
+		COLOR: string;
 		COLORTERM: string;
-		LOGNAME: string;
-		MOTD_SHOWN: string;
-		TERM: string;
-		LC_TIME: string;
-		VIMRUNTIME: string;
-		LC_NAME: string;
-		LC_PAPER: string;
-		DBUS_SESSION_BUS_ADDRESS: string;
-		MYVIMRC: string;
-		BROWSER: string;
-		DISPLAY: string;
-		XDG_SESSION_ID: string;
-		LC_TELEPHONE: string;
-		LC_ADDRESS: string;
+		CommonProgramFiles: string;
+		CommonProgramW6432: string;
+		COMPUTERNAME: string;
+		ComSpec: string;
+		DEV: string;
+		DriverData: string;
+		EDITOR: string;
+		GIT_ASKPASS: string;
+		GIT_INSTALL_ROOT: string;
+		HOME: string;
+		HOMEDRIVE: string;
+		HOMEPATH: string;
+		INIT_CWD: string;
+		LANG: string;
+		LOCALAPPDATA: string;
+		LOGONSERVER: string;
+		MODE: string;
+		NODE: string;
 		NODE_ENV: string;
 		npm_command: string;
 		npm_config_cache: string;
@@ -251,6 +191,7 @@ declare module '$env/dynamic/private' {
 		npm_package_version: string;
 		NUMBER_OF_PROCESSORS: string;
 		OneDrive: string;
+		OneDriveConsumer: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		OS: string;
 		Path: string;
@@ -259,6 +200,7 @@ declare module '$env/dynamic/private' {
 		PROCESSOR_IDENTIFIER: string;
 		PROCESSOR_LEVEL: string;
 		PROCESSOR_REVISION: string;
+		PROD: string;
 		ProgramData: string;
 		ProgramFiles: string;
 		ProgramW6432: string;
@@ -271,18 +213,22 @@ declare module '$env/dynamic/private' {
 		TEMP: string;
 		TERM_PROGRAM: string;
 		TERM_PROGRAM_VERSION: string;
+		TEST: string;
 		TMP: string;
 		USERDOMAIN: string;
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
+		VITEST: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
 		VSCODE_INJECTION: string;
 		windir: string;
-		ZES_ENABLE_SYSMAN: string;
+		WSLENV: string;
+		WT_PROFILE_ID: string;
+		WT_SESSION: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}
