@@ -16,7 +16,6 @@ export const actions = {
       password: formData.password,
     };
     try {
-      await locals.pb.collection('users').requestVerification(formData.email);
       await locals.pb.collection('users').create(formData);
       await locals.pb.collection('users').authWithPassword(authData.email, authData.password);
 
